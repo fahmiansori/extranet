@@ -15,12 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'namespace' => 'Auth',
-    'middleware' => 'api',
 ], function($router)
 {
     Route::get('/', 'LoginController@index')->name('login');
     Route::post('/', 'LoginController@login')->name('login');
     Route::get('/forgot-password', 'LoginController@forgotPassword')->name('forgot-password');
     Route::post('/forgot-password', 'LoginController@forgotPasswordProcess')->name('forgot-password');
-    Route::post('refresh', 'LoginController@refresh');
 });

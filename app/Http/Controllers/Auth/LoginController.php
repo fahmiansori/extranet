@@ -5,16 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use GuzzleHttp\Client;
+
 class LoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => [
-            'index',
-            'login',
-            'forgotPassword',
-            'forgotPasswordProcess',
-            ]]);
     }
 
     /**
@@ -33,13 +29,10 @@ class LoginController extends Controller
         $password = $request->password;
         $remember = $request->remember;
 
-        $credentials = request([$username, $password]);
+        $client = new Client(['base_uri' => 'https://reqres.in/']);
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return $this->respondWithToken($token);
+        $response = $client->request('GET', '/api/users?page=1');
+        return $response;
     }
 
     public function forgotPassword()
@@ -55,22 +48,5 @@ class LoginController extends Controller
 
     public function logout()
     {
-        auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
-    }
-
-    public function refresh(Request $request)
-    {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
     }
 }
