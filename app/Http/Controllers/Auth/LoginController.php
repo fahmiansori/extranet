@@ -29,9 +29,41 @@ class LoginController extends Controller
         $password = $request->password;
         $remember = $request->remember;
 
-        $client = new Client(['base_uri' => 'https://reqres.in/']);
+        $form_params = [
+            'email' => $username,
+            'password' => $password
+        ];
 
-        $response = $client->request('GET', '/api/users?page=1');
+        // $token = "";
+        $headers = [
+            // 'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
+
+        $client = new Client(['base_uri' => 'http://localhost']);
+
+        $is_noexeption = false;
+        try {
+            $request = $client->request('POST', '/api_passport/public/api/login',[
+                'form_params' => $form_params,
+                'headers' => $headers
+            ]);
+            $response_code = $request->getStatusCode(); // success : 200
+            $response = $request->getBody();
+            $response_obj = json_decode($response, true);
+            $token = $response_obj['token'];
+
+            $is_noexeption = true;
+        }
+        catch (\GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $response = $response->getBody()->getContents();
+        }
+        catch (\GuzzleHttp\Exception\ServerException $e) {
+            $response = $e->getResponse();
+            $response = $response->getBody()->getContents();
+        }
+
         return $response;
     }
 
