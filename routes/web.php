@@ -25,11 +25,21 @@ Route::group([
 });
 
 Route::group([
-    'namespace' => 'Hotel',
-    'prefix' => 'hotel',
     // 'middleware' => 'checktoken'
-], function($router)
+], function()
 {
-    Route::get('/', 'HotelController@index')->name('hotel');
-    Route::get('/room-form', 'HotelController@roomForm')->name('hotel.room-form');
+    Route::group([
+        'namespace' => 'Hotel',
+        'prefix' => 'hotel',
+    ], function($router){
+        Route::get('/', 'HotelController@index')->name('hotel');
+        Route::get('/room-form', 'HotelController@roomForm')->name('hotel.room-form');
+    });
+
+    Route::group([
+        'namespace' => 'Booking',
+        'prefix' => 'booking',
+    ], function($router){
+        Route::get('/', 'BookingController@index')->name('booking');
+    });
 });

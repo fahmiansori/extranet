@@ -27,6 +27,10 @@ $(document).ready(function(){
 
         disableLoginButton();
 
+        // debug : disable login
+        window.location.href = logged_in_url;
+        return;
+
         let _token = $("input[name='_token']").val();
         let username = $("input[name='username']").val();
         let password = $("input[name='password']").val();
