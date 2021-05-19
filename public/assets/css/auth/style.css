@@ -5,3 +5,8 @@
     color: #FF0009;
     text-decoration: none;
 }
+.button-red {
+    color: #ffffff;
+    background: #FF0009;
+    border-color: #FF0009;
+}

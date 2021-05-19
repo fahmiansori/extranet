@@ -22,6 +22,9 @@
 					<div class="card shadow-lg" style="border-radius: 20px;">
 						<div class="card-body p-5">
 							<h1 class="fs-4 card-title fw-bold mb-4">Forgot Password</h1>
+
+                            @include('template.flash_message')
+
 							<form method="POST" class="needs-validation" novalidate="" autocomplete="off">
                                 {{ csrf_field() }}
 
@@ -34,7 +37,7 @@
 								</div>
 
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn button-red">
                                         SEND
                                     </button>
                                 </div>

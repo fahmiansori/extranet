@@ -18,8 +18,17 @@ Route::group([
 ], function($router)
 {
     Route::get('/', 'LoginController@index')->name('login');
-    Route::post('/', 'LoginController@login')->name('login');
+    Route::post('/login', 'LoginController@login')->name('login-submit');
     Route::get('/logout', 'LoginController@logout')->name('logout');
     Route::get('/forgot-password', 'LoginController@forgotPassword')->name('forgot-password');
     Route::post('/forgot-password', 'LoginController@forgotPasswordProcess')->name('forgot-password');
+});
+
+Route::group([
+    'namespace' => 'Hotel',
+    'prefix' => 'hotel',
+    'middleware' => 'checktoken'
+], function($router)
+{
+    Route::get('/', 'HotelController@index')->name('hotel');
 });

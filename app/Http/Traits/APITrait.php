@@ -73,7 +73,7 @@ trait APITrait {
         }
 
         $data = [
-            'status' = $status,
+            'status' => $status,
             'response_code' => $response_code,
             'response' => $response,
             'response_obj' => $response_obj,
