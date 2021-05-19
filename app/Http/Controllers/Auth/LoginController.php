@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 
 class LoginController extends Controller
 {
@@ -20,6 +21,12 @@ class LoginController extends Controller
      */
     public function index()
     {
+        $access_token = Cache::get('access_token');
+
+        if($access_token){
+            return redirect()->route('home');
+        }
+
         return view('auth.login');
     }
 
@@ -30,41 +37,69 @@ class LoginController extends Controller
         $remember = $request->remember;
 
         $form_params = [
-            'email' => $username,
+            'username' => $username,
             'password' => $password
         ];
 
-        // $token = "";
         $headers = [
-            // 'Authorization' => 'Bearer ' . $token,
-            'Accept'        => 'application/json',
+            'Accept' => 'application/json',
         ];
 
         $client = new Client(['base_uri' => 'http://localhost']);
+        $end_point = '/api_passport/public/api/login';
 
         $is_noexeption = false;
+        $is_success_login = false;
+        $data_response = [];
+        $status = 'failed';
+        $message = '';
         try {
-            $request = $client->request('POST', '/api_passport/public/api/login',[
+            $request = $client->request('POST', $end_point,[
                 'form_params' => $form_params,
                 'headers' => $headers
             ]);
             $response_code = $request->getStatusCode(); // success : 200
             $response = $request->getBody();
             $response_obj = json_decode($response, true);
-            $token = $response_obj['token'];
+            $token = (array_key_exists('token', $response_obj))? $response_obj['token']:'';
+            if($token){
+                $is_success_login = true;
+            }else{
+                $message = $response;
+            }
+
+            if($response_code == 200  && $is_success_login){
+                if(!empty($remember) && $remember == 'true'){
+                    Cache::forever('access_token', $token);
+                }else{
+                    $token_timeout = \Config::get('values.token_timeout');
+                    $seconds = $token_timeout;
+                    Cache::put('access_token', $token, $seconds);
+                }
+
+                $status = 'success';
+                $message = 'Successfully login ...';
+            }
 
             $is_noexeption = true;
         }
         catch (\GuzzleHttp\Exception\ClientException $e) {
             $response = $e->getResponse();
             $response = $response->getBody()->getContents();
+            $message = $response;
         }
         catch (\GuzzleHttp\Exception\ServerException $e) {
             $response = $e->getResponse();
             $response = $response->getBody()->getContents();
+            $message = $response;
         }
 
-        return $response;
+        $data_response['status'] = $status;
+        $data_response['message'] = $message;
+        $data_response['is_noexeption'] = $is_noexeption;
+        $data_response['is_success_login'] = $is_success_login;
+
+        return response()->json($data_response);
     }
 
     public function forgotPassword()
@@ -75,10 +110,61 @@ class LoginController extends Controller
     public function forgotPasswordProcess(Request $request)
     {
         $username = $request->username;
-        dd($request->all());
+
+        $form_params = [
+            'username' => $username
+        ];
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        $client = new Client(['base_uri' => 'http://localhost']);
+        $end_point = '/api_passport/public/api/forgot-password';
+
+        $is_noexeption = false;
+        $data_response = [];
+        $status = 'failed';
+        $message = '';
+        try {
+            $request = $client->request('POST', $end_point,[
+                'form_params' => $form_params,
+                'headers' => $headers
+            ]);
+            $response_code = $request->getStatusCode();
+            $response = $request->getBody();
+            $response_obj = json_decode($response, true);
+
+            if($response_code == 200){
+                $status = 'success';
+                $message = 'Successfully ...';
+            }
+            $message = $response;
+
+            $is_noexeption = true;
+        }
+        catch (\GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $response = $response->getBody()->getContents();
+            $message = $response;
+        }
+        catch (\GuzzleHttp\Exception\ServerException $e) {
+            $response = $e->getResponse();
+            $response = $response->getBody()->getContents();
+            $message = $response;
+        }
+
+        $data_response['status'] = $status;
+        $data_response['message'] = $message;
+        $data_response['is_noexeption'] = $is_noexeption;
+
+        return response()->json($data_response);
     }
 
     public function logout()
     {
+        Cache::forget('access_token');
+
+        return redirect()->route('login');
     }
 }

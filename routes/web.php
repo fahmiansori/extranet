@@ -19,6 +19,7 @@ Route::group([
 {
     Route::get('/', 'LoginController@index')->name('login');
     Route::post('/', 'LoginController@login')->name('login');
+    Route::get('/logout', 'LoginController@logout')->name('logout');
     Route::get('/forgot-password', 'LoginController@forgotPassword')->name('forgot-password');
     Route::post('/forgot-password', 'LoginController@forgotPasswordProcess')->name('forgot-password');
 });
