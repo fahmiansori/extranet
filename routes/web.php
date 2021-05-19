@@ -27,7 +27,7 @@ Route::group([
 Route::group([
     'namespace' => 'Hotel',
     'prefix' => 'hotel',
-    'middleware' => 'checktoken'
+    // 'middleware' => 'checktoken'
 ], function($router)
 {
     Route::get('/', 'HotelController@index')->name('hotel');
