@@ -26,7 +26,7 @@ class LoginController extends Controller
         $access_token = Cache::get('access_token');
 
         if($access_token){
-            return redirect()->route('home');
+            return redirect()->route('hotel');
         }
 
         return view('auth.login');
