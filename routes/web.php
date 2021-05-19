@@ -31,4 +31,5 @@ Route::group([
 ], function($router)
 {
     Route::get('/', 'HotelController@index')->name('hotel');
+    Route::get('/room-form', 'HotelController@roomForm')->name('hotel.room-form');
 });

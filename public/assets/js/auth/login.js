@@ -38,13 +38,15 @@ $(document).ready(function(){
             success: function(data) {
                 if($.isEmptyObject(data.error)){
                     if(data.is_success_login){
-                        $('message-success').html('Successfully logged in.');
+                        $('.message-success').html('Successfully logged in.');
+                        $('.message-success').show();
 
                         setTimeout(function(){
                             window.location.href = logged_in_url;
                         },1000);
                     }else{
-                        $('message-failed').html('Failed to login.');
+                        $('.message-failed').html('Failed to login. Check you username or password.');
+                        $('.message-failed').show();
                     }
                 }else{
                     printErrorMsg(data.error);

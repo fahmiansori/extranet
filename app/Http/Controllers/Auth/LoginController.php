@@ -45,7 +45,7 @@ class LoginController extends Controller
             $remember = $request->remember;
 
             $form_params = [
-                'username' => $username,
+                'email' => $username,
                 'password' => $password
             ];
 

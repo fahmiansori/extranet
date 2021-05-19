@@ -28,4 +28,9 @@ class HotelController extends Controller
     {
         return view('hotel.index');
     }
+
+    public function roomForm()
+    {
+        return view('hotel.room_form');
+    }
 }
