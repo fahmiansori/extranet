@@ -29,6 +29,12 @@ Route::group([
 ], function()
 {
     Route::group([
+        'prefix' => 'dashboard',
+    ], function($router){
+        Route::get('/', 'DashboardController@index')->name('dashboard');
+    });
+
+    Route::group([
         'namespace' => 'Hotel',
         'prefix' => 'hotel',
     ], function($router){

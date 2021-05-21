@@ -86,7 +86,7 @@
     <script src="{{ asset('libs/jquery-3.6.0.min.js') }}"></script>
     <script>
         let login_url = '{{ route('login-submit') }}';
-        let logged_in_url = '{{ route('hotel') }}';
+        let logged_in_url = '{{ route('dashboard') }}';
     </script>
     <script src="{{ asset('assets/js/auth/login.js') }}"></script>
 </body>

@@ -26,7 +26,10 @@ class HotelController extends Controller
      */
     public function index()
     {
-        return view('hotel.index');
+        $data = [];
+        $data['page_active'] = 'hotel';
+
+        return view('hotel.index', $data);
     }
 
     public function roomForm()

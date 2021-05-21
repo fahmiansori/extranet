@@ -36,8 +36,13 @@
                                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                                 @php
+                                                    $page_current_dashboard = '';
+                                                    if(!isset($page_active) || $page_active == 'dashboard'){
+                                                        $page_current_dashboard = 'active';
+                                                    }
+
                                                     $page_current_hotel = '';
-                                                    if(!isset($page_active) || $page_active == 'hotel'){
+                                                    if(isset($page_active) && $page_active == 'hotel'){
                                                         $page_current_hotel = 'active';
                                                     }
 
@@ -47,6 +52,9 @@
                                                     }
                                                 @endphp
 
+                                                <li class="nav-item">
+                                                    <a class="nav-link {{ $page_current_dashboard }}" {{ (!empty($page_current_dashboard))? 'aria-current="page"':'' }} href="{{ route('dashboard') }}">Dashboard</a>
+                                                </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link {{ $page_current_hotel }}" {{ (!empty($page_current_hotel))? 'aria-current="page"':'' }} href="{{ route('hotel') }}">Hotel</a>
                                                 </li>
