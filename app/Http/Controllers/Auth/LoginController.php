@@ -9,11 +9,15 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
 use Validator;
+use Config;
 
 class LoginController extends Controller
 {
+    private $base_uri;
+
     public function __construct()
     {
+        $this->base_uri = Config::get('values.base_uri');
     }
 
     /**
@@ -53,7 +57,7 @@ class LoginController extends Controller
                 'Accept' => 'application/json',
             ];
 
-            $client = new Client(['base_uri' => 'http://localhost']);
+            $client = new Client(['base_uri' => $this->base_uri]);
             $end_point = '/api_passport/public/api/login';
 
             $is_noexeption = false;
