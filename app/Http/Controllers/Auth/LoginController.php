@@ -35,17 +35,17 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
         if ($validator->passes()){
-            $username = $request->username;
+            $email = $request->email;
             $password = $request->password;
             $remember = $request->remember;
 
             $form_params = [
-                'email' => $username,
+                'email' => $email,
                 'password' => $password
             ];
 
@@ -122,10 +122,10 @@ class LoginController extends Controller
 
     public function forgotPasswordProcess(Request $request)
     {
-        $username = $request->username;
+        $email = $request->email;
 
         $form_params = [
-            'username' => $username
+            'email' => $email
         ];
 
         $headers = [

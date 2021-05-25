@@ -42,12 +42,12 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="username">Username</label>
-                                    <input id="username" type="username" class="form-control" name="username" value="" required autofocus>
+                                    <label class="mb-2 text-muted" for="email">Username</label>
+                                    <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
                                     <div class="invalid-feedback">
                                         Username is required
                                     </div>
-                                    <div class="text-danger p-1">{{ $errors->first('username') }}</div>
+                                    <div class="text-danger p-1">{{ $errors->first('email') }}</div>
                                 </div>
 
                                 <div class="mb-3">

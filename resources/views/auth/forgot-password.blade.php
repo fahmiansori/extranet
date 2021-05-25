@@ -29,10 +29,10 @@
                                 {{ csrf_field() }}
 
 								<div class="mb-3">
-									<label class="mb-2 text-muted" for="username">Username</label>
-									<input id="username" type="username" class="form-control" name="username" value="" required autofocus>
+									<label class="mb-2 text-muted" for="email">Email</label>
+									<input id="email" type="email" class="form-control" name="email" value="" required autofocus>
 									<div class="invalid-feedback">
-										Username is required
+										Email is required
 									</div>
 								</div>
 
