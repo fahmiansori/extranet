@@ -20,58 +20,115 @@
                 </div>
 
                 <div>
-                    <div class="row">
-                        <div class="col-lg-6">
+                    <div class="row m-1">
+                        <div class="col_left col-lg-1">
                             <div class="text-end">
-                                Hotel Name :
+                                <label for="hotel_select" class="col-form-label">Hotel :</label>
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col_right col-lg-3">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <select name="hotel_select" id="hotel_select" class="form-select" aria-label="Choose">
+                                        <option value="1">One</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
+                            <div class="text-end">
+                                <label for="hotel_name" class="col-form-label">Hotel Name :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="hotel_name" id="hotel_name" class="form-control">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-6">
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
                             <div class="text-end">
-                                Star Rating :
+                                <label for="star_rating" class="col-form-label">Star Rating :</label>
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="star_rating" id="star_rating" class="form-control">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-6">
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
                             <div class="text-end">
-                                Hotel Address :
+                                <label for="hotel_address" class="col-form-label">Hotel Address :</label>
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="hotel_address" id="hotel_address" class="form-control">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-6">
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
                             <div class="text-end">
-                                Hotel Contact :
+                                <label for="hotel_contact" class="col-form-label">Hotel Contact :</label>
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="hotel_contact" id="hotel_contact" class="form-control">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-6">
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
                             <div class="text-end">
-                                Hotel Facility :
+                                <label for="hotel_facility" class="col-form-label">Hotel Facility :</label>
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="hotel_facility" id="hotel_facility" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1 mt-4">
+                        <div class="col_left col-lg-5">
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="d-grid gap-2 d-md-flex mr-5">
+                                <button class="btn btn-secondary me-md-2" type="button" id="cancel">Cancel</button>
+                                <button class="btn button-red" type="button" id="save">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>

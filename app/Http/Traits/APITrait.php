@@ -62,11 +62,35 @@ trait APITrait {
                 $response = $e->getResponse();
                 $response = $response->getBody()->getContents();
                 $message = 'Request failed : ClientException';
+                $response_code = $e->getResponse()->getStatusCode();
+
+                // debug
+                \Log::info('Client');
+                \Log::info($message);
             }
             catch (\GuzzleHttp\Exception\ServerException $e) {
                 $response = $e->getResponse();
                 $response = $response->getBody()->getContents();
                 $message = 'Request failed : ServerException';
+                $response_code = $e->getResponse()->getStatusCode();
+
+                // debug
+                \Log::info('Server');
+                \Log::info($message);
+            }
+            catch (\GuzzleHttp\Exception\ConnectException $e) {
+                $message = $e->getMessage();
+                // debug
+                \Log::Warning('guzzle_connect_exception', [
+                        'message' => $e->getMessage()
+                ]);
+            }
+            catch (\GuzzleHttp\Exception\RequestException $e) {
+                $message = $e->getMessage();
+                // debug
+                \Log::Warning('guzzle_connection_timeout', [
+                        'message' => $e->getMessage()
+                ]);
             }
         }else{
             $message = 'Unauthorized';

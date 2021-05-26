@@ -38,7 +38,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required',
             'password' => 'required',
         ]);
@@ -58,7 +58,8 @@ class LoginController extends Controller
             ];
 
             $client = new Client(['base_uri' => $this->base_uri]);
-            $end_point = '/api_passport/public/api/login';
+            $end_point = '/api';
+            $end_point = $end_point .'/loginPartner';
 
             $is_noexeption = false;
             $is_success_login = false;
@@ -85,7 +86,7 @@ class LoginController extends Controller
                     if(!empty($remember) && $remember == 'true'){
                         Cache::forever('access_token', $token);
                     }else{
-                        $token_timeout = \Config::get('values.token_timeout');
+                        $token_timeout = Config::get('values.token_timeout');
                         $seconds = $token_timeout;
                         Cache::put('access_token', $token, $seconds);
                     }
@@ -100,11 +101,21 @@ class LoginController extends Controller
                 $response = $e->getResponse();
                 $response = $response->getBody()->getContents();
                 $message = $response;
+                $response_code = $e->getResponse()->getStatusCode();
+
+                // debug
+                \Log::info('Client');
+                \Log::info($message);
             }
             catch (\GuzzleHttp\Exception\ServerException $e) {
                 $response = $e->getResponse();
                 $response = $response->getBody()->getContents();
                 $message = $response;
+                $response_code = $e->getResponse()->getStatusCode();
+
+                // debug
+                \Log::info('Server');
+                \Log::info($message);
             }
 
             $data_response['status'] = $status;
@@ -129,22 +140,24 @@ class LoginController extends Controller
         $email = $request->email;
 
         $form_params = [
-            'email' => $email
+            // 'email' => $email
         ];
 
         $headers = [
             'Accept' => 'application/json',
         ];
 
-        $client = new Client(['base_uri' => 'http://localhost']);
-        $end_point = '/api_passport/public/api/forgot-password';
+        $client = new Client(['base_uri' => $this->base_uri]);
+        $end_point = '/api';
+        $end_point = $end_point .'/forgotPassword/'. $email;
 
         $is_noexeption = false;
+        $response_code = 0;
         $data_response = [];
         $status = 'failed';
         $message = '';
         try {
-            $request = $client->request('POST', $end_point,[
+            $request = $client->request('GET', $end_point,[
                 'form_params' => $form_params,
                 'headers' => $headers
             ]);
@@ -155,8 +168,13 @@ class LoginController extends Controller
             if($response_code == 200){
                 $status = 'success';
                 $message = 'Successfully ...';
+
+                if($response_obj['result']){
+                    $message = $response_obj['message'];
+                }
+            }else{
+                $message = $response;
             }
-            $message = $response;
 
             $is_noexeption = true;
         }
@@ -164,20 +182,43 @@ class LoginController extends Controller
             $response = $e->getResponse();
             $response = $response->getBody()->getContents();
             $message = $response;
+            $response_code = $e->getResponse()->getStatusCode();
+            $message = "Failed to reset password.[0]";
+
+            // debug
+            \Log::info('Client');
+            \Log::info($message);
         }
         catch (\GuzzleHttp\Exception\ServerException $e) {
             $response = $e->getResponse();
             $response = $response->getBody()->getContents();
             $message = $response;
+            $response_code = $e->getResponse()->getStatusCode();
+            $message = "Failed to reset password.[1]";
+
+            // debug
+            \Log::info('Server');
+            \Log::info($message);
+        }
+        catch (\GuzzleHttp\Exception\ConnectException $e) {
+            $message = "Failed to reset password.[2]";
+            \Log::Warning('guzzle_connect_exception', [
+                    'message' => $e->getMessage()
+            ]);
+        }
+        catch (\GuzzleHttp\Exception\RequestException $e) {
+            $message = "Failed to reset password.[3]";
+            \Log::Warning('guzzle_connection_timeout', [
+                    'message' => $e->getMessage()
+            ]);
         }
 
-        $data_response['status'] = $status;
-        $data_response['message'] = $message;
-        $data_response['is_noexeption'] = $is_noexeption;
+        return back()->with($status, $message);
 
-        return back()->with('success','Submited');
-
-        return response()->json($data_response);
+        // $data_response['status'] = $status;
+        // $data_response['message'] = $message;
+        // $data_response['is_noexeption'] = $is_noexeption;
+        // return response()->json($data_response);
     }
 
     public function logout()

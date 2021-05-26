@@ -28,17 +28,17 @@ $(document).ready(function(){
         disableLoginButton();
 
         // debug : disable login
-        window.location.href = logged_in_url;
-        return;
+        // window.location.href = logged_in_url;
+        // return;
 
         let _token = $("input[name='_token']").val();
-        let username = $("input[name='username']").val();
+        let email = $("input[name='email']").val();
         let password = $("input[name='password']").val();
 
         $.ajax({
             url: login_url,
             type:'POST',
-            data: {_token:_token, username:username, password:password},
+            data: {_token:_token, email:email, password:password},
             success: function(data) {
                 if($.isEmptyObject(data.error)){
                     if(data.is_success_login){
@@ -49,8 +49,19 @@ $(document).ready(function(){
                             window.location.href = logged_in_url;
                         },1000);
                     }else{
-                        $('.message-failed').html('Failed to login. Check you username or password.');
+                        // $('.message-failed').html('Failed to login. Check you email or password.');
+                        let msg_ = data.message;
+                        msg_parsed = JSON.parse(msg_);
+                        $('.message-failed').html(msg_); // msg_parsed.error
                         $('.message-failed').show();
+
+                        // debug : tetap dialihkan
+                        setTimeout(function(){
+                            $('.message-failed').html('Debug : redirecting ...');
+                        },1000);
+                        setTimeout(function(){
+                            window.location.href = logged_in_url;
+                        },2000);
                     }
                 }else{
                     printErrorMsg(data.error);
