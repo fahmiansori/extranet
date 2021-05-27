@@ -20,6 +20,10 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('dashboard.index');
+        $data = [];
+        $data['page_active'] = 'dashboard';
+        $data['title_top'] = 'Dashboard';
+
+        return view('dashboard.index', $data);
     }
 }

@@ -5,6 +5,7 @@
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="">
+    <link rel="icon" href="{{ asset('assets/logoImage.png') }}" type="image/png" sizes="16x16">
     <title>@yield('title_top') | Travelsya</title>
     <link href="{{ asset('libs/bootstrap-5/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/auth/style.css') }}" rel="stylesheet">
