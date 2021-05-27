@@ -75,7 +75,16 @@ class LoginController extends Controller
                 $response_code = $request->getStatusCode(); // success : 200
                 $response = $request->getBody();
                 $response_obj = json_decode($response, true);
-                $token = (array_key_exists('token', $response_obj))? $response_obj['token']:'';
+                $token = (array_key_exists('access_token', $response_obj))? $response_obj['access_token']:'';
+                $token_type = (array_key_exists('token_type', $response_obj))? $response_obj['token_type']:'';
+                $expires_in = (array_key_exists('expires_in', $response_obj))? $response_obj['expires_in']:'';
+                $user = (array_key_exists('user', $response_obj))? $response_obj['user']:[];
+                if(count($user) > 0){
+                    $nama = (array_key_exists('nama', $user))? $user['nama']:'';
+                    $alamat = (array_key_exists('alamat', $user))? $user['alamat']:'';
+                    $telepon = (array_key_exists('telepon', $user))? $user['telepon']:'';
+                }
+
                 if($token){
                     $is_success_login = true;
                 }else{
@@ -85,10 +94,23 @@ class LoginController extends Controller
                 if($response_code == 200  && $is_success_login){
                     if(!empty($remember) && $remember == 'true'){
                         Cache::forever('access_token', $token);
+                        Cache::forever('token_type', $token_type);
+                        Cache::forever('nama', $nama);
+                        Cache::forever('alamat', $alamat);
+                        Cache::forever('telepon', $telepon);
                     }else{
-                        $token_timeout = Config::get('values.token_timeout');
-                        $seconds = $token_timeout;
+                        if($expires_in){
+                            $seconds = $expires_in;
+                        }else{
+                            $token_timeout = Config::get('values.token_timeout');
+                            $seconds = $token_timeout;
+                        }
+
                         Cache::put('access_token', $token, $seconds);
+                        Cache::put('token_type', $token_type, $seconds);
+                        Cache::put('nama', $nama, $seconds);
+                        Cache::put('alamat', $alamat, $seconds);
+                        Cache::put('telepon', $telepon, $seconds);
                     }
 
                     $status = 'success';
@@ -224,6 +246,10 @@ class LoginController extends Controller
     public function logout()
     {
         Cache::forget('access_token');
+        Cache::forget('token_type');
+        Cache::forget('nama');
+        Cache::forget('alamat');
+        Cache::forget('telepon');
 
         return redirect()->route('login');
     }

@@ -25,7 +25,7 @@ Route::group([
 });
 
 Route::group([
-    // 'middleware' => 'checktoken'
+    'middleware' => 'checktoken'
 ], function()
 {
     Route::group([

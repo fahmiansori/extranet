@@ -46,22 +46,45 @@ $(document).ready(function(){
                         $('.message-success').show();
 
                         setTimeout(function(){
-                            window.location.href = logged_in_url;
-                        },1000);
-                    }else{
-                        // $('.message-failed').html('Failed to login. Check you email or password.');
-                        let msg_ = data.message;
-                        msg_parsed = JSON.parse(msg_);
-                        $('.message-failed').html(msg_); // msg_parsed.error
-                        $('.message-failed').show();
-
-                        // debug : tetap dialihkan
-                        setTimeout(function(){
-                            $('.message-failed').html('Debug : redirecting ...');
+                            $('.message-success').html('Redirecting ...');
                         },1000);
                         setTimeout(function(){
                             window.location.href = logged_in_url;
                         },2000);
+                    }else{
+                        let msg_parsed = '';
+                        let msg_ = data.message;
+                        if(msg_ && !jQuery.isEmptyObject(msg_)){
+                            msg_parsed = JSON.parse(msg_);
+                            if(msg_parsed.error){
+                                msg_parsed = msg_parsed.error;
+                            }
+
+                            if(msg_parsed == 'invalid_credentials'){
+                                msg_parsed = 'Failed to login. Check your username or password!';
+                            }else{
+                                msg_parsed = 'Failed to login.[0]';
+                            }
+                        }else{
+                            msg_parsed = msg_;
+
+                            if(jQuery.isEmptyObject(msg_parsed)){
+                                msg_parsed = data.status;
+                            }
+
+                            msg_parsed = 'Failed to login.[1]';
+                        }
+
+                        $('.message-failed').html(msg_parsed); // msg_parsed.error
+                        $('.message-failed').show();
+
+                        // debug : tetap dialihkan
+                        // setTimeout(function(){
+                        //     $('.message-failed').html('Debug : redirecting ...');
+                        // },1000);
+                        // setTimeout(function(){
+                        //     window.location.href = logged_in_url;
+                        // },2000);
                     }
                 }else{
                     printErrorMsg(data.error);
