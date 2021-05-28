@@ -19,15 +19,19 @@ trait APITrait {
 
         if($is_use_auth){
             $check_auth = $this->check_auth($is_api);
+            $access_token = Cache::get('access_token');
 
             if($check_auth && $access_token){
-                $access_token = Cache::get('access_token');
                 $headers['Authorization'] = 'Bearer ' . $access_token;
             }
         }
 
+        if($method == 'PUT'){
+            $headers['Accept'] = 'application/x-www-form-urlencoded';
+        }
+
         $form_params = $form_params_input;
-        $end_point = $end_point_url; // '/api_passport/public/api/login'
+        $end_point = '/api'. $end_point_url; // '/api_passport/public/api/login'
 
         $base_uri = \Config::get('values.base_uri');
         $client = new Client(['base_uri' => $base_uri]);
@@ -104,7 +108,8 @@ trait APITrait {
             'message' => $message
         ];
 
-        return response()->json($data);
+        return json_encode($data);
+        // return response()->json($data);
     }
 
     public function check_auth($is_api = false) {

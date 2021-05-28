@@ -39,6 +39,8 @@ Route::group([
         'prefix' => 'hotel',
     ], function($router){
         Route::get('/', 'HotelController@index')->name('hotel');
+        Route::get('/detail/{hotel_id?}', 'HotelController@detail')->name('hotel.detail');
+        Route::post('/update', 'HotelController@update')->name('hotel.update');
         Route::get('/room-form', 'HotelController@roomForm')->name('hotel.room-form');
     });
 

@@ -5,14 +5,14 @@
 </div>
 @endif
 
-@if ($message = Session::get('error')) 
+@if ($message = Session::get('error'))
 <div class="alert alert-danger alert-block">
     {{-- <button type="button" class="close" data-dismiss="alert">×</button> --}}
     <strong>{{ $message }}</strong>
 </div>
 @endif
 
-@if ($message = Session::get('failed')) 
+@if ($message = Session::get('failed'))
 <div class="alert alert-danger alert-block">
     {{-- <button type="button" class="close" data-dismiss="alert">×</button> --}}
     <strong>{{ $message }}</strong>
@@ -39,3 +39,13 @@
     Please check the form below for errors
 </div>
 @endif
+
+<div>
+    <div class="alert alert-danger print-error-msg" style="display:none">
+        <ul></ul>
+    </div>
+</div>
+<div class="alert alert-success message-success" style="display:none">
+</div>
+<div class="alert alert-danger message-failed" style="display:none">
+</div>

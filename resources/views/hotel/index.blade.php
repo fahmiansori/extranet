@@ -3,6 +3,8 @@
 @section('title_page', 'Hotel')
 
 @section('content')
+    {{ csrf_field() }}
+
     <div class="align-items-start">
         <div class="nav nav-tabs me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active" id="tab_1" data-bs-toggle="pill" href="#tab_1_content" role="tab" aria-controls="tab_1_content" aria-selected="true">Hotel Information</a>
@@ -27,11 +29,14 @@
                             </div>
                         </div>
 
-                        <div class="col_right col-lg-3">
+                        <div class="col_right col-lg-4">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
                                     <select name="hotel_select" id="hotel_select" class="form-select" aria-label="Choose">
-                                        <option value="1">One</option>
+                                        <option value="">.:: Choose ::.</option>
+                                        @foreach($data_hotel as $key)
+                                            <option value="{{ $key->id }}">{{ $key->text }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -40,6 +45,7 @@
                 </div>
 
                 <div>
+                    <input type="hidden" name="hotel_id" id="hotel_id">
                     <div class="row m-1">
                         <div class="col_left col-lg-5">
                             <div class="text-end">
@@ -281,4 +287,148 @@
 @endsection
 
 @section('js')
+    <script>
+        let route_detail_hotel = '{{ route('hotel.detail') }}';
+        let route_update_detail_hotel = '{{ route('hotel.update') }}';
+    </script>
+    <script>
+        function clearInput(){
+            $('#hotel_id').val('');
+            $('#hotel_name').val('');
+            $('#star_rating').val('');
+            $('#hotel_address').val('');
+            $('#hotel_contact').val('');
+            $('#hotel_facility').val('');
+
+            $('#hotel_select').val('');
+        }
+
+        function setHotelDetail(data){
+            data = JSON.parse(data);
+
+            if(data.status == 'success'){
+                let hotel_id = data.data.id;
+                let hotel_name = data.data.nama_hotel;
+                let star_rating = data.data.bintang;
+                let hotel_address = data.data.alamat_hotel;
+                let hotel_contact = data.data.telpon;
+                let hotel_facility = '';
+
+                $('#hotel_id').val(hotel_id);
+                $('#hotel_name').val(hotel_name);
+                $('#star_rating').val(star_rating);
+                $('#hotel_address').val(hotel_address);
+                $('#hotel_contact').val(hotel_contact);
+                $('#hotel_facility').val('');
+            }else{
+                clearInput();
+            }
+        }
+
+        function loadHotelData(){
+            let hotel_id = $('#hotel_select').val();
+
+            $.ajax({
+                url: route_detail_hotel +'/'+ hotel_id,
+                type:'GET',
+                success: function(data) {
+                    setHotelDetail(data);
+                }
+            }).always(function() {
+            })
+            .fail(function() {
+                alert('server error');
+            });
+        }
+
+        let loading_el = `
+            <div class="spinner-border spinner-border-sm text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        `;
+        let save_button_caption = $('#save').text();
+        let disableSaveButton = function(){
+            $('#cancel').prop('disabled', true);
+            $('#save').prop('disabled', true);
+            $('#save').html(loading_el);
+
+            $('.print-error-msg').hide();
+            $('.message-success').hide();
+            $('.message-failed').hide();
+        }
+        let enableSaveButton = function(){
+            $('#cancel').prop('disabled', false);
+            $('#save').prop('disabled', false);
+            $('#save').html(save_button_caption);
+        }
+        function saveDetail(){
+            disableSaveButton();
+
+            let hotel_id = $('#hotel_id').val();
+            let hotel_name = $('#hotel_name').val();
+            let star_rating = $('#star_rating').val();
+            let hotel_address = $('#hotel_address').val();
+            let hotel_contact = $('#hotel_contact').val();
+            let hotel_facility = $('#hotel_facility').val();
+            let check_in = '12:00';
+            let check_out = '13:00';
+            let email = 'hendra@gmail.com';
+            let website = 'http://hendra.com';
+            let status = 'aktif';
+
+            let _token = $("input[name='_token']").val();
+            let data_send = {_token:_token,
+                hotel_id:hotel_id,
+                hotel_name:hotel_name,
+                star_rating:star_rating,
+                hotel_address:hotel_address,
+                hotel_contact:hotel_contact,
+                hotel_facility:hotel_facility,
+                check_in:check_in,
+                check_out:check_out,
+                email:email,
+                website:website,
+                status:status,
+            };
+            $.ajax({
+                url: route_update_detail_hotel,
+                type:'POST',
+                data: data_send,
+                success: function(data) {
+                    console.log(data);
+                    if($.isEmptyObject(data.error)){
+                        if(data.status == 'success'){
+                            $('.message-success').html(data.message);
+                            $('.message-success').show();
+                        }else{
+                            $('.message-failed').html(data.message);
+                            $('.message-failed').show();
+                        }
+                    }else{
+                        printErrorMsg(data.error);
+                    }
+                }
+            }).always(function() {
+                enableSaveButton();
+                clearInput();
+            })
+            .fail(function() {
+                alert('server error');
+            });
+        }
+
+        $(document).ready(function(){
+            $('#hotel_select').on('change', function(){
+                loadHotelData();
+            });
+
+            $('#save').on('click', function(){
+                saveDetail();
+            });
+
+            $('#cancel').on('click', function(){
+                clearInput();
+            });
+        });
+    </script>
 @endsection

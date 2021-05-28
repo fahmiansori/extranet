@@ -118,6 +118,15 @@
 
     <script src="{{ asset('libs/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('libs/bootstrap-5/js/bootstrap.min.js') }}"></script>
+    <script>
+        function printErrorMsg (msg) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display','block');
+            $.each( msg, function( key, value ) {
+                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
+    </script>
     @yield('js')
 </body>
 </html>
