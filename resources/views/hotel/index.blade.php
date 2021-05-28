@@ -301,6 +301,10 @@
             $('#hotel_facility').val('');
 
             $('#hotel_select').val('');
+
+            $('.print-error-msg').hide();
+            $('.message-success').hide();
+            $('.message-failed').hide();
         }
 
         function setHotelDetail(data){
@@ -395,7 +399,6 @@
                 type:'POST',
                 data: data_send,
                 success: function(data) {
-                    console.log(data);
                     if($.isEmptyObject(data.error)){
                         if(data.status == 'success'){
                             $('.message-success').html(data.message);
