@@ -68,6 +68,32 @@ class HotelController extends Controller
         return json_encode($data);
     }
 
+    public function detailPhoto(Request $request){
+        $hotel_id = $request->hotel_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['data'] = [];
+        $data_ = [];
+
+        if($hotel_id && !empty($hotel_id)){
+            $params = [
+                'end_point_url' => '/hotelPhoto/show/'. $hotel_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $data_ = json_decode($this->send_request($params));
+            if($data_->status == 'success' && $data_->response_obj->result){
+                $data_ = $data_->response_obj->data;
+                $data['status'] = 'success';
+            }else{
+                $data_ = [];
+            }
+        }
+        $data['data'] = $data_;
+
+        return response()->json($data);
+    }
+
     public function update(Request $request){
         $validator = Validator::make($request->all(), [
             'hotel_id' => 'required',
@@ -125,8 +151,105 @@ class HotelController extends Controller
         return response()->json(['error'=>$validator->errors()->all()]);
     }
 
-    public function roomForm()
-    {
+    public function roomForm(){
         return view('hotel.room_form');
+    }
+
+    public function detailPhotoUpload(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id_hotel' => 'required',
+            'flag_utama' => 'required',
+            'image_hotel' => 'required',
+        ]);
+
+        if($validator->passes()){
+            $id_hotel = $request->id_hotel;
+            $flag_utama = $request->flag_utama;
+            $image_hotel = ($request->hasFile('image_hotel'))? $request->file('image_hotel'):'';
+
+            $form_params = [
+                'id_hotel' => $id_hotel,
+                'flag_utama' => $flag_utama,
+                'image_hotel' => $image_hotel,
+            ];
+            $form_params_options = [
+                [
+                    'field' => 'image_hotel',
+                    'type' => 'file'
+                ]
+            ];
+            $params = [
+                'method' => 'POST',
+                'form_params_input' => $form_params,
+                'form_params_options' => $form_params_options,
+                'end_point_url' => '/hotelPhoto/store',
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to save data!';
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
+
+    public function detailPhotoDelete(Request $request){
+        $image_id = $request->image_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to delete data!';
+
+        if($image_id && !empty($image_id)){
+            $params = [
+                'method' => 'DELETE',
+                'end_point_url' => '/hotelPhoto/delete/'. $image_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+        }
+        return response()->json($data);
+    }
+
+    public function detailPhotoUpdatePrimary(Request $request){
+        $image_id = $request->image_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to update data!';
+
+        if($image_id && !empty($image_id)){
+            $params = [
+                'method' => 'PUT',
+                'end_point_url' => '/hotelPhoto/update/'. $image_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+        }
+        return response()->json($data);
     }
 }

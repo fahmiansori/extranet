@@ -41,6 +41,10 @@ Route::group([
         'prefix' => 'hotel',
     ], function($router){
         Route::get('/', 'HotelController@index')->name('hotel');
+        Route::get('/detail/photo/{hotel_id?}', 'HotelController@detailPhoto')->name('hotel.detail.photo');
+        Route::post('/detail/photo-upload', 'HotelController@detailPhotoUpload')->name('hotel.detail.photo-upload');
+        Route::get('/detail/photo-delete/{image_id?}', 'HotelController@detailPhotoDelete')->name('hotel.detail.photo-delete');
+        Route::get('/detail/photo-update-primary/{image_id?}', 'HotelController@detailPhotoUpdatePrimary')->name('hotel.detail.photo-update-primary');
         Route::get('/detail/{hotel_id?}', 'HotelController@detail')->name('hotel.detail');
         Route::post('/update', 'HotelController@update')->name('hotel.update');
         Route::get('/room-form', 'HotelController@roomForm')->name('hotel.room-form');
