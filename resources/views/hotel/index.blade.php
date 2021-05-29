@@ -31,7 +31,7 @@
 
                         <div class="col_right col-lg-4">
                             <div class="row g-2 align-items-center">
-                                <div class="col-lg-6">
+                                <div class="col-lg-8">
                                     <select name="hotel_select" id="hotel_select" class="form-select" aria-label="Choose">
                                         <option value="">.:: Choose ::.</option>
                                         @foreach($data_hotel as $key)
@@ -39,8 +39,15 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                <div class="col" id="loading_hotel" style="display:none;">
+                                    <div class="spinner-border text-red" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -72,7 +79,14 @@
                         <div class="col_right col-lg-7">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
-                                    <input type="text" name="star_rating" id="star_rating" class="form-control">
+                                    <select name="star_rating" id="star_rating" class="form-select" aria-label="Choose">
+                                        <option value=""></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +102,7 @@
                         <div class="col_right col-lg-7">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
-                                    <input type="text" name="hotel_address" id="hotel_address" class="form-control">
+                                    <textarea name="hotel_address" id="hotel_address" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -113,6 +127,86 @@
                     <div class="row m-1">
                         <div class="col_left col-lg-5">
                             <div class="text-end">
+                                <label for="check_in" class="col-form-label">Check In :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="check_in" id="check_in" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
+                            <div class="text-end">
+                                <label for="check_out" class="col-form-label">Check Out :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="check_out" id="check_out" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
+                            <div class="text-end">
+                                <label for="email" class="col-form-label">Email :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="email" name="email" id="email" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
+                            <div class="text-end">
+                                <label for="website" class="col-form-label">Website :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="website" id="website" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
+                            <div class="text-end">
+                                <label for="status" class="col-form-label">Status :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="status" id="status" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
+                            <div class="text-end">
                                 <label for="hotel_facility" class="col-form-label">Hotel Facility :</label>
                             </div>
                         </div>
@@ -120,7 +214,7 @@
                         <div class="col_right col-lg-7">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
-                                    <input type="text" name="hotel_facility" id="hotel_facility" class="form-control">
+                                    <input type="text" name="hotel_facility" id="hotel_facility" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -132,8 +226,8 @@
 
                         <div class="col_right col-lg-7">
                             <div class="d-grid gap-2 d-md-flex mr-5">
-                                <button class="btn btn-secondary me-md-2" type="button" id="cancel">Cancel</button>
-                                <button class="btn button-red" type="button" id="save">Save</button>
+                                <button class="btn btn-secondary me-md-2" type="button" id="cancel" disabled>Cancel</button>
+                                <button class="btn button-red" type="button" id="save" disabled>Save</button>
                             </div>
                         </div>
                     </div>
@@ -298,13 +392,28 @@
             $('#star_rating').val('');
             $('#hotel_address').val('');
             $('#hotel_contact').val('');
+            $('#check_in').val('');
+            $('#check_out').val('');
+            $('#email').val('');
+            $('#website').val('');
+            $('#status').val('');
             $('#hotel_facility').val('');
 
             $('#hotel_select').val('');
 
-            $('.print-error-msg').hide();
-            $('.message-success').hide();
-            $('.message-failed').hide();
+            setTimeout(function(){
+                $('.print-error-msg').hide();
+                $('.message-success').hide();
+                $('.message-failed').hide();
+            },2000);
+            disableSaveButton();
+        }
+
+        let showLoadingHotel = function(){
+            $('#loading_hotel').show();
+        }
+        let hideLoadingHotel = function(){
+            $('#loading_hotel').hide();
         }
 
         function setHotelDetail(data){
@@ -316,6 +425,11 @@
                 let star_rating = data.data.bintang;
                 let hotel_address = data.data.alamat_hotel;
                 let hotel_contact = data.data.telpon;
+                let check_in = data.data.checkIn;
+                let check_out = data.data.checkOut;
+                let email = data.data.email;
+                let website = data.data.website;
+                let status = data.data.status;
                 let hotel_facility = '';
 
                 $('#hotel_id').val(hotel_id);
@@ -323,7 +437,13 @@
                 $('#star_rating').val(star_rating);
                 $('#hotel_address').val(hotel_address);
                 $('#hotel_contact').val(hotel_contact);
+                $('#check_in').val(check_in);
+                $('#check_out').val(check_out);
+                $('#email').val(email);
+                $('#website').val(website);
+                $('#status').val(status);
                 $('#hotel_facility').val('');
+                enableSaveButton();
             }else{
                 clearInput();
             }
@@ -339,6 +459,7 @@
                     setHotelDetail(data);
                 }
             }).always(function() {
+                hideLoadingHotel();
             })
             .fail(function() {
                 alert('server error');
@@ -354,11 +475,6 @@
         let disableSaveButton = function(){
             $('#cancel').prop('disabled', true);
             $('#save').prop('disabled', true);
-            $('#save').html(loading_el);
-
-            $('.print-error-msg').hide();
-            $('.message-success').hide();
-            $('.message-failed').hide();
         }
         let enableSaveButton = function(){
             $('#cancel').prop('disabled', false);
@@ -367,6 +483,7 @@
         }
         function saveDetail(){
             disableSaveButton();
+            $('#save').html(loading_el);
 
             let hotel_id = $('#hotel_id').val();
             let hotel_name = $('#hotel_name').val();
@@ -374,11 +491,11 @@
             let hotel_address = $('#hotel_address').val();
             let hotel_contact = $('#hotel_contact').val();
             let hotel_facility = $('#hotel_facility').val();
-            let check_in = '12:00';
-            let check_out = '13:00';
-            let email = 'hendra@gmail.com';
-            let website = 'http://hendra.com';
-            let status = 'aktif';
+            let check_in = $('#check_in').val();
+            let check_out = $('#check_out').val();
+            let email = $('#email').val();
+            let website = $('#website').val();
+            let status = $('#status').val();
 
             let _token = $("input[name='_token']").val();
             let data_send = {_token:_token,
@@ -412,8 +529,8 @@
                     }
                 }
             }).always(function() {
-                enableSaveButton();
                 clearInput();
+                $('#save').html(save_button_caption);
             })
             .fail(function() {
                 alert('server error');
@@ -422,6 +539,7 @@
 
         $(document).ready(function(){
             $('#hotel_select').on('change', function(){
+                showLoadingHotel();
                 loadHotelData();
             });
 

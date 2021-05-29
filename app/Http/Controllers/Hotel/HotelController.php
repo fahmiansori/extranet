@@ -49,7 +49,7 @@ class HotelController extends Controller
         $data['data'] = [];
         $data_hotel = [];
 
-        if($hotel_id){
+        if($hotel_id && !empty($hotel_id)){
             $params = [
                 'end_point_url' => '/hotelPartner/detail/'. $hotel_id,
                 'is_use_auth' => true,
