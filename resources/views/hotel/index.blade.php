@@ -450,6 +450,7 @@
         }
 
         function loadHotelData(){
+            showLoadingHotel();
             let hotel_id = $('#hotel_select').val();
 
             if(hotel_id){
@@ -466,6 +467,7 @@
                     alert('server error');
                 });
             }else{
+                hideLoadingHotel();
                 clearInput();
             }
         }
@@ -543,7 +545,6 @@
 
         $(document).ready(function(){
             $('#hotel_select').on('change', function(){
-                showLoadingHotel();
                 loadHotelData();
             });
 
