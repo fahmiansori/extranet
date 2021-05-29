@@ -32,6 +32,7 @@ Route::group([
         'prefix' => 'dashboard',
     ], function($router){
         Route::get('/', 'DashboardController@index')->name('dashboard');
+        Route::get('/partner-profile', 'DashboardController@partnerProfile')->name('dashboard.partner-profile');
     });
 
     Route::group([

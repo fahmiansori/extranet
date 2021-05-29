@@ -26,4 +26,13 @@ class DashboardController extends Controller
 
         return view('dashboard.index', $data);
     }
+
+    public function partnerProfile()
+    {
+        $data = [];
+        $data['page_active'] = 'dashboard.partner-profile';
+        $data['title_top'] = 'Partner Profile';
+
+        return view('dashboard.partner_profile', $data);
+    }
 }

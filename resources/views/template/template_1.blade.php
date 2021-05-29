@@ -41,6 +41,10 @@
                                                     if(!isset($page_active) || $page_active == 'dashboard'){
                                                         $page_current_dashboard = 'active';
                                                     }
+                                                    $page_current_dashboard_partner_profile = '';
+                                                    if(!isset($page_active) || $page_active == 'dashboard.partner-profile'){
+                                                        $page_current_dashboard_partner_profile = 'active';
+                                                    }
 
                                                     $page_current_hotel = '';
                                                     if(isset($page_active) && $page_active == 'hotel'){
@@ -55,6 +59,9 @@
 
                                                 <li class="nav-item">
                                                     <a class="nav-link {{ $page_current_dashboard }}" {{ (!empty($page_current_dashboard))? 'aria-current="page"':'' }} href="{{ route('dashboard') }}">Dashboard</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link {{ $page_current_dashboard_partner_profile }}" {{ (!empty($page_current_dashboard_partner_profile))? 'aria-current="page"':'' }} href="{{ route('dashboard.partner-profile') }}">Partner Profile</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link {{ $page_current_hotel }}" {{ (!empty($page_current_hotel))? 'aria-current="page"':'' }} href="{{ route('hotel') }}">Hotel</a>
