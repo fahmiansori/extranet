@@ -80,6 +80,7 @@ class LoginController extends Controller
                 $expires_in = (array_key_exists('expires_in', $response_obj))? $response_obj['expires_in']:'';
                 $user = (array_key_exists('user', $response_obj))? $response_obj['user']:[];
                 if(count($user) > 0){
+                    $partner_id = (array_key_exists('id', $user))? $user['id']:'';
                     $nama = (array_key_exists('nama', $user))? $user['nama']:'';
                     $alamat = (array_key_exists('alamat', $user))? $user['alamat']:'';
                     $telepon = (array_key_exists('telepon', $user))? $user['telepon']:'';
@@ -95,6 +96,7 @@ class LoginController extends Controller
                     if(!empty($remember) && $remember == 'true'){
                         Cache::forever('access_token', $token);
                         Cache::forever('token_type', $token_type);
+                        Cache::forever('partner_id', $partner_id);
                         Cache::forever('nama', $nama);
                         Cache::forever('alamat', $alamat);
                         Cache::forever('telepon', $telepon);
@@ -108,6 +110,7 @@ class LoginController extends Controller
 
                         Cache::put('access_token', $token, $seconds);
                         Cache::put('token_type', $token_type, $seconds);
+                        Cache::put('partner_id', $partner_id, $seconds);
                         Cache::put('nama', $nama, $seconds);
                         Cache::put('alamat', $alamat, $seconds);
                         Cache::put('telepon', $telepon, $seconds);

@@ -47,7 +47,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -118,7 +117,7 @@
                         <div class="col_right col-lg-7">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
-                                    <input type="text" name="hotel_contact" id="hotel_contact" class="form-control">
+                                    <input type="number" name="hotel_contact" id="hotel_contact" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -134,7 +133,7 @@
                         <div class="col_right col-lg-7">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
-                                    <input type="text" name="check_in" id="check_in" class="form-control">
+                                    <input type="time" name="check_in" id="check_in" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -150,7 +149,7 @@
                         <div class="col_right col-lg-7">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
-                                    <input type="text" name="check_out" id="check_out" class="form-control">
+                                    <input type="time" name="check_out" id="check_out" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -198,13 +197,17 @@
                         <div class="col_right col-lg-7">
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
-                                    <input type="text" name="status" id="status" class="form-control">
+                                    <select name="status" id="status" class="form-select" aria-label="Choose">
+                                        <option value=""></option>
+                                        <option value="aktif">Aktif</option>
+                                        <option value="tidak aktif">Tidak Aktif</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row m-1">
+                    <div class="row m-1" style="display:none;">
                         <div class="col_left col-lg-5">
                             <div class="text-end">
                                 <label for="hotel_facility" class="col-form-label">Hotel Facility :</label>
@@ -215,6 +218,22 @@
                             <div class="row g-2 align-items-center">
                                 <div class="col-lg-6">
                                     <input type="text" name="hotel_facility" id="hotel_facility" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-5">
+                            <div class="text-end">
+                                <label for="selling_rate" class="col-form-label">Selling Rate (%) :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-6">
+                                    <input type="text" name="selling_rate" id="selling_rate" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -398,6 +417,7 @@
             $('#website').val('');
             $('#status').val('');
             $('#hotel_facility').val('');
+            $('#selling_rate').val('');
 
             $('#hotel_select').val('');
 
@@ -430,6 +450,7 @@
                 let email = data.data.email;
                 let website = data.data.website;
                 let status = data.data.status;
+                let selling_rate = data.data.selling_rate;
                 let hotel_facility = '';
 
                 $('#hotel_id').val(hotel_id);
@@ -442,6 +463,7 @@
                 $('#email').val(email);
                 $('#website').val(website);
                 $('#status').val(status);
+                $('#selling_rate').val(selling_rate);
                 $('#hotel_facility').val('');
                 enableSaveButton();
             }else{
@@ -496,6 +518,7 @@
             let star_rating = $('#star_rating').val();
             let hotel_address = $('#hotel_address').val();
             let hotel_contact = $('#hotel_contact').val();
+            let selling_rate = $('#selling_rate').val();
             let hotel_facility = $('#hotel_facility').val();
             let check_in = $('#check_in').val();
             let check_out = $('#check_out').val();
@@ -510,6 +533,7 @@
                 star_rating:star_rating,
                 hotel_address:hotel_address,
                 hotel_contact:hotel_contact,
+                selling_rate:selling_rate,
                 hotel_facility:hotel_facility,
                 check_in:check_in,
                 check_out:check_out,
@@ -535,10 +559,18 @@
                     }
                 }
             }).always(function() {
-                clearInput();
+                // clearInput();
+                document.getElementById('nav_bar').scrollIntoView({block: 'start', behavior: 'smooth'});
+                setTimeout(function(){
+                    $('.print-error-msg').hide();
+                    $('.message-success').hide();
+                    $('.message-failed').hide();
+                },4000);
+
                 $('#save').html(save_button_caption);
             })
             .fail(function() {
+                enableSaveButton();
                 alert('server error');
             });
         }

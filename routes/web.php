@@ -33,6 +33,7 @@ Route::group([
     ], function($router){
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::get('/partner-profile', 'DashboardController@partnerProfile')->name('dashboard.partner-profile');
+        Route::post('/partner-profile/save', 'DashboardController@partnerProfileSave')->name('dashboard.partner-profile.save');
     });
 
     Route::group([

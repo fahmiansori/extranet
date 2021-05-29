@@ -5,6 +5,8 @@ namespace App\Http\Traits;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
+use Config;
+
 trait APITrait {
     public function send_request($params) {
         $headers = [
@@ -14,6 +16,7 @@ trait APITrait {
         $method = (array_key_exists('method', $params))? $params['method']:'GET';
         $end_point_url = (array_key_exists('end_point_url', $params))? $params['end_point_url']:'';
         $form_params_input = (array_key_exists('form_params_input', $params))? $params['form_params_input']:[];
+        $form_params_options = (array_key_exists('form_params_options', $params))? $params['form_params_options']:[];
         $is_use_auth = (array_key_exists('is_use_auth', $params))? $params['is_use_auth']:false;
         $is_api = (array_key_exists('is_api', $params))? $params['is_api']:false; // jika API request, maka tidak redirect
 
@@ -30,10 +33,45 @@ trait APITrait {
             $headers['Accept'] = 'application/x-www-form-urlencoded';
         }
 
+        $form_params_input_multipart = [];
+        if($form_params_options){
+            $multipart_ = [];
+            $multipart_keys = [];
+            foreach($form_params_options as $key){
+                $field_ = $key['field'];
+                $type_ = $key['type'];
+
+                $content_ = '';
+                if($form_params_input[$field_]){
+                    $content_ = fopen($form_params_input[$field_]->getPathName(), 'r');
+                }
+                $multipart_[] = [
+                    'Content-type' => 'multipart/form-data',
+                    'name' => $field_,
+                    'contents' => $content_
+                ];
+
+                $multipart_keys[] = $field_;
+            }
+
+            foreach($form_params_input as $key => $value){
+                if(!in_array($key, $multipart_keys)){
+                    $multipart_[] = [
+                        'Content-type' => 'multipart/form-data',
+                        'name' => $key,
+                        'contents' => $value
+                    ];
+                }
+            }
+
+            $form_params_input_multipart = $multipart_;
+        }
+
+        $form_params_multipart = $form_params_input_multipart;
         $form_params = $form_params_input;
         $end_point = '/api'. $end_point_url; // '/api_passport/public/api/login'
 
-        $base_uri = \Config::get('values.base_uri');
+        $base_uri = Config::get('values.base_uri');
         $client = new Client(['base_uri' => $base_uri]);
 
         $response_code = 0;
@@ -48,6 +86,10 @@ trait APITrait {
                 ];
                 if(count($form_params) > 0){
                     $data_send['form_params'] = $form_params;
+                }
+                if(count($form_params_multipart) > 0){
+                    unset($data_send['form_params']);
+                    $data_send['multipart'] = $form_params_multipart;
                 }
 
                 $request = $client->request($method, $end_point, $data_send);

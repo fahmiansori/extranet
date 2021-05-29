@@ -32,7 +32,81 @@ class DashboardController extends Controller
         $data = [];
         $data['page_active'] = 'dashboard.partner-profile';
         $data['title_top'] = 'Partner Profile';
+        $data['data'] = [];
+
+        $partner_id = Cache::get('partner_id');
+        $partner_data = [];
+        if($partner_id){
+            $params = [
+                'end_point_url' => '/profilPartner/show/'. $partner_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $data_ = json_decode($this->send_request($params));
+            if($data_->status == 'success' && !empty($data_->response_obj->data)){
+                $data_ = $data_->response_obj->data;
+                $data['status'] = 'success';
+            }else{
+                $data_ = [];
+            }
+
+            $partner_data = $data_;
+        }
+        $data['data'] = $partner_data;
 
         return view('dashboard.partner_profile', $data);
+    }
+
+    public function partnerProfileSave(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required',
+        ]);
+
+        if($validator->passes()){
+            $id = $request->id;
+            $nama = $request->nama;
+            $gambar = ($request->hasFile('gambar'))? $request->file('gambar'):'';
+            $alamat = $request->alamat;
+            $telepon = $request->telepon;
+
+            $form_params = [
+                'id' => $id,
+                'nama' => $nama,
+                'image_partner' => $gambar,
+                'alamat' => $alamat,
+                'telepon' => $telepon,
+            ];
+            $form_params_options = [
+                [
+                    'field' => 'image_partner',
+                    'type' => 'file'
+                ]
+            ];
+            $params = [
+                'method' => 'POST',
+                'form_params_input' => $form_params,
+                'form_params_options' => $form_params_options,
+                'end_point_url' => '/profilPartner/update/'. $id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to save data!';
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
     }
 }

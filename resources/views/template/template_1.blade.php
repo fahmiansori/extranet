@@ -23,7 +23,7 @@
 
                     <div class="card shadow-lg" style="border-radius: 20px;">
                         <div class="card-body p-3">
-                            <div>
+                            <div id="nav_bar">
                                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                                     <div class="container-fluid">
                                         <a class="navbar-brand" href="#">
