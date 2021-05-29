@@ -452,18 +452,22 @@
         function loadHotelData(){
             let hotel_id = $('#hotel_select').val();
 
-            $.ajax({
-                url: route_detail_hotel +'/'+ hotel_id,
-                type:'GET',
-                success: function(data) {
-                    setHotelDetail(data);
-                }
-            }).always(function() {
-                hideLoadingHotel();
-            })
-            .fail(function() {
-                alert('server error');
-            });
+            if(hotel_id){
+                $.ajax({
+                    url: route_detail_hotel +'/'+ hotel_id,
+                    type:'GET',
+                    success: function(data) {
+                        setHotelDetail(data);
+                    }
+                }).always(function() {
+                    hideLoadingHotel();
+                })
+                .fail(function() {
+                    alert('server error');
+                });
+            }else{
+                clearInput();
+            }
         }
 
         let loading_el = `
