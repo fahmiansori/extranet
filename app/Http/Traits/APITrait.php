@@ -79,6 +79,7 @@ trait APITrait {
         $response_obj = [];
         $status = 'failed';
         $message = '';
+        $is_session_expired = false;
         if($check_auth){
             try {
                 $data_send = [
@@ -95,11 +96,13 @@ trait APITrait {
                 $request = $client->request($method, $end_point, $data_send);
                 $response_code = $request->getStatusCode(); // success : 200
                 $response = $request->getBody();
-                $response_obj = json_decode($response, true); // as array
+                $response_obj = json_decode($response, true); // as array, if use as object use json_decode
 
                 if($response_code == 200){
                     $message = 'Request success';
                     $status = 'success';
+
+                    $is_session_expired = $this->check_session_expire($response_obj);
                 }else{
                     $message = 'Request failed. CODE:'.$response_code;
                 }
@@ -147,6 +150,7 @@ trait APITrait {
             'response_code' => $response_code,
             'response' => $response,
             'response_obj' => $response_obj,
+            'is_session_expired' => $is_session_expired,
             'message' => $message
         ];
 
@@ -154,7 +158,22 @@ trait APITrait {
         // return response()->json($data);
     }
 
-    public function check_auth($is_api = false) {
+    private function check_session_expire($response_obj, $is_api = false) {
+        $result = (array_key_exists('result', $response_obj))? $response_obj['result']:false;
+        $status_code = (array_key_exists('status_code', $response_obj))? $response_obj['status_code']:404;
+        $message = (array_key_exists('message', $response_obj))? $response_obj['message']:"Authorization Token not found";
+
+        if(!$result && $status_code == 404){ // && $message == "Authorization Token not found"
+            return true;
+
+            Cache::forever('is_token_expired', 'true');
+        }
+
+        Cache::forever('is_token_expired', 'false');
+        return false;
+    }
+
+    private function check_auth($is_api = false) {
         $access_token = Cache::get('access_token');
 
         if(!$access_token){

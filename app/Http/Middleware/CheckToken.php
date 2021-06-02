@@ -18,9 +18,16 @@ class CheckToken
     public function handle($request, Closure $next)
     {
         $access_token = Cache::get('access_token');
+        $is_token_expired = Cache::get('is_token_expired');
 
         if(!$access_token){
             return redirect('/');
+        }
+        if(empty($is_token_expired)){
+            return redirect('/logout');
+        }
+        if($is_token_expired == 'true'){
+            return redirect('/logout');
         }
 
         return $next($request);

@@ -115,6 +115,7 @@ class LoginController extends Controller
                         Cache::put('alamat', $alamat, $seconds);
                         Cache::put('telepon', $telepon, $seconds);
                     }
+                    Cache::forever('is_token_expired', 'false');
 
                     $status = 'success';
                     $message = 'Successfully login ...';
@@ -253,6 +254,7 @@ class LoginController extends Controller
         Cache::forget('nama');
         Cache::forget('alamat');
         Cache::forget('telepon');
+        Cache::forget('is_token_expired');
 
         return redirect()->route('login');
     }

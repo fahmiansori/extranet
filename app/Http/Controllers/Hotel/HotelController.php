@@ -36,6 +36,8 @@ class HotelController extends Controller
             'is_api' => true,
         ];
         $data_hotel = json_decode($this->send_request($params));
+
+        dd($data_hotel);
         $data_hotel = ($data_hotel->status == 'success' && $data_hotel->response_obj->result)? $data_hotel->response_obj->hotel:[];
         $data['data_hotel'] = $data_hotel;
 
