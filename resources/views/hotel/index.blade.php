@@ -997,6 +997,11 @@
             </div>
 
             <div class="tab-pane fade" id="tab_5_content" role="tabpanel" aria-labelledby="tab_5">
+                <div class="float-end mt-3 mb-3">
+                    <a class="btn btn-sm btn-danger" id="back_to_rooms" href="javascript:void(0);">Back</a>
+                </div>
+                <div class="clearfix"></div>
+
                 <div class="alert alert-secondary p-1" role="alert">
                     <strong>
                         Room <span id="room_name_caption">-</span> Photos
@@ -2386,6 +2391,12 @@
         }
 
         $(document).ready(function(){
+            $('#back_to_rooms').on('click', function(){
+                $('[href="#tab_2_content"]').tab('show');
+                clearPhotoRoom();
+                clearPhotoRoomInput();
+            });
+
             $('#ul_room_photos').on('click','li span:first-child',
                 function(){
                     updatePrimaryRoomPhoto($(this));
