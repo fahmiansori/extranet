@@ -495,7 +495,7 @@
                                     <select name="hotel_select_3" id="hotel_select_3" class="form-select" aria-label="Choose">
                                         <option value="">.:: Choose ::.</option>
                                         @foreach($data_hotel as $key)
-                                            <option value="{{ $key->id }}">{{ $key->text }}</option>
+                                            <option value="{{ $key->id }}" data-selling_rate="{{ $key->selling_rate }}">{{ $key->text }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -557,7 +557,7 @@
                                     <select name="hotel_select_4" id="hotel_select_4" class="form-select" aria-label="Choose">
                                         <option value="">.:: Choose ::.</option>
                                         @foreach($data_hotel as $key)
-                                            <option value="{{ $key->id }}">{{ $key->text }}</option>
+                                            <option value="{{ $key->id }}" data-selling_rate="{{ $key->selling_rate }}">{{ $key->text }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -588,6 +588,7 @@
 
                         <div>
                             <input type="hidden" name="room_id" id="room_id" value="">
+                            <input type="hidden" name="selling_rate_room" id="selling_rate_room" value="">
 
                             <div class="row m-1">
                                 <div class="col_left col-lg-5">
@@ -1794,6 +1795,7 @@
         let clearInputRoom = function(){
             $('#hotel_select_4').val('');
             $('#room_id').val('');
+            $('#selling_rate_room').val('');
             $('#room_name').val('');
             $('#room_price').val('');
             $('#room_selling_price').val('');
@@ -2061,6 +2063,9 @@
         let editRoom = function(el){
             let room_id = el.data('room_id');
 
+            let selling_rate = $('#hotel_select_3').find(':selected').data('selling_rate');
+            $('#selling_rate_room').val(selling_rate);
+
             $('[href="#tab_4_content"]').tab('show');
             $('#room_form_type').html('Edit');
             showRoomHotelEditLoading();
@@ -2137,6 +2142,33 @@
 
             $('#rooms').on('click', '.rooms_set_active', function(){
                 setActiveRoom($(this));
+            });
+
+            $('#hotel_select_4').on('change', function(){
+                let selling_rate = $(this).find(':selected').data('selling_rate');
+
+                $('#selling_rate_room').val(selling_rate);
+            });
+
+            $('#room_price').on('keyup change', function(){
+                let val_ = parseFloat($(this).val());
+                let selling_rate = parseFloat($('#selling_rate_room').val());
+                let total_price = val_ + (val_ * (selling_rate/100));
+                if(total_price > 0){}else{
+                    total_price = 0;
+                }
+
+                $('#room_selling_price').val(total_price);
+            });
+            $('#extra_bed_price').on('keyup change', function(){
+                let val_ = parseFloat($(this).val());
+                let selling_rate = parseFloat($('#selling_rate_room').val());
+                let total_price = val_ + (val_ * (selling_rate/100));
+                if(total_price > 0){}else{
+                    total_price = 0;
+                }
+
+                $('#extra_bed_selling_price').val(total_price);
             });
 
             $('#cancel_room').on('click', function(){

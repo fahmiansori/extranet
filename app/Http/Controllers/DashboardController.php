@@ -23,6 +23,17 @@ class DashboardController extends Controller
         $data = [];
         $data['page_active'] = 'dashboard';
         $data['title_top'] = 'Dashboard';
+        $data['data_hotel'] = [];
+
+        $params = [
+            'end_point_url' => '/hotelPartner/listHotel',
+            'is_use_auth' => true,
+            'is_api' => true,
+        ];
+        $data_hotel = json_decode($this->send_request($params));
+
+        $data_hotel = ($data_hotel->status == 'success' && $data_hotel->response_obj->result)? $data_hotel->response_obj->hotel:[];
+        $data['data_hotel'] = $data_hotel;
 
         return view('dashboard.index', $data);
     }
