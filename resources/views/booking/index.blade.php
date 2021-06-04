@@ -321,16 +321,25 @@
                         <div class="row m-1">
                             <div class="col_left col-lg-2">
                                 <div class="text-end">
-                                    <label for="room_type_3" class="col-form-label">Room Type :</label>
+                                    <label for="hotel_select_2" class="col-form-label">Hotel :</label>
                                 </div>
                             </div>
 
-                            <div class="col_right col-lg-6">
+                            <div class="col_right col-lg-4">
                                 <div class="row g-2 align-items-center">
-                                    <div class="col-lg-6">
-                                        <select name="room_type_3" id="room_type_3" class="form-select" aria-label="Choose" placeholder="Choose">
-                                            <option value="1">1</option>
+                                    <div class="col-lg-8">
+                                        <select name="hotel_select_2" id="hotel_select_2" class="form-select" aria-label="Choose">
+                                            <option value="">.:: Choose ::.</option>
+                                            @foreach($data_hotel as $key)
+                                                <option value="{{ $key->id }}">{{ $key->text }}</option>
+                                            @endforeach
                                         </select>
+                                    </div>
+
+                                    <div class="col" id="loading_hotel_2" style="display:none;">
+                                        <div class="spinner-border text-red" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -369,22 +378,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row m-1">
-                            <div class="col_left col-lg-2">
-                                <div class="text-end">
-                                    <label for="day_of_week_2" class="col-form-label">Day of Week :</label>
-                                </div>
-                            </div>
-
-                            <div class="col_right col-lg-6">
-                                <div class="row g-2 align-items-center">
-                                    <div class="col-lg-6">
-                                        <input type="text" name="day_of_week_2" id="day_of_week_2" class="form-control" value="All Day">
                                     </div>
                                 </div>
                             </div>
