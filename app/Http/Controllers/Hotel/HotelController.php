@@ -253,4 +253,188 @@ class HotelController extends Controller
         }
         return response()->json($data);
     }
+
+    public function rooms(Request $request){
+        $hotel_id = $request->hotel_id;
+        $q = (!empty($request->q))? $request->q:'';
+        $sortBy = (!empty($request->sortBy))? $request->sortBy:'price-desc';
+        $page = (!empty($request->page))? $request->page:1;
+        $perPage = (!empty($request->perPage))? $request->perPage:10;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['total'] = 0;
+        $data['data'] = [];
+        $data_ = [];
+
+        if($hotel_id && !empty($hotel_id)){
+            $params = [
+                'end_point_url' => '/kamarPartner/list/'. $hotel_id .'?q='. $q .'&sortBy='. $sortBy .'&page='. $page .'&perPage='. $perPage .'',
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $data_ = json_decode($this->send_request($params));
+            if($data_->status == 'success' && $data_->response_obj->result){
+                $res = $data_->response_obj;
+                $data_ = $res->data;
+                $total_ = $res->total;
+                $data['total'] = $total_;
+                $data['status'] = 'success';
+            }else{
+                $data_ = [];
+            }
+        }
+        $data['data'] = $data_;
+
+        return response()->json($data);
+    }
+
+    public function detailRoom(Request $request){
+        $room_id = $request->room_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['data'] = [];
+        $data_ = [];
+
+        if($room_id && !empty($room_id)){
+            $params = [
+                'end_point_url' => '/kamarPartner/show/'. $room_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $data_ = json_decode($this->send_request($params));
+            if($data_->status == 'success' && $data_->response_obj->result){
+                $data_ = $data_->response_obj->hotel;
+                $data['status'] = 'success';
+            }else{
+                $data_ = [];
+            }
+        }
+        $data['data'] = $data_;
+
+        return response()->json($data);
+    }
+
+    public function setInactiveRoom(Request $request){
+        $room_id = $request->room_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to set inactive!';
+        $data['data'] = [];
+
+        if($room_id && !empty($room_id)){
+            $params = [
+                'end_point_url' => '/kamarPartner/close/'. $room_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $data_ = json_decode($this->send_request($params));
+            if($data_->status == 'success' && $data_->response_obj->result){
+                $data['message'] = $data_->response_obj->message;
+                $data['status'] = 'success';
+            }
+        }
+
+        return response()->json($data);
+    }
+
+    public function setActiveRoom(Request $request){
+        $room_id = $request->room_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to set inactive!';
+        $data['data'] = [];
+
+        if($room_id && !empty($room_id)){
+            $params = [
+                'end_point_url' => '/kamarPartner/open/'. $room_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $data_ = json_decode($this->send_request($params));
+            if($data_->status == 'success' && $data_->response_obj->result){
+                $data['message'] = $data_->response_obj->message;
+                $data['status'] = 'success';
+            }
+        }
+
+        return response()->json($data);
+    }
+
+    public function saveRoom(Request $request){
+        $room_id = $request->room_id;
+        $hotel_id = $request->hotel_id;
+
+        $validation = [
+            'room_name' => 'required',
+            'room_price' => 'required',
+            'max_occupancy' => 'required',
+        ];
+
+        if(!$room_id || empty($room_id)){
+            $validation['hotel_id'] = 'required';
+        }
+        if(!$hotel_id || empty($hotel_id)){
+            $validation['room_id'] = 'required';
+        }
+
+        $validator = Validator::make($request->all(), $validation);
+
+        if($validator->passes()){
+            $room_name = $request->room_name;
+            $room_price = $request->room_price;
+            $room_selling_price = $request->room_selling_price;
+            $number_of_room = $request->number_of_room;
+            $room_size = $request->room_size;
+            $max_occupancy = $request->max_occupancy;
+            $max_extra_beds = $request->max_extra_beds;
+            $extra_bed_price = $request->extra_bed_price;
+            $extra_bed_selling_price = $request->extra_bed_selling_price;
+            $breakfast_included = $request->breakfast_included;
+            $wifi_included = $request->wifi_included;
+
+            $is_extrabed = ($max_extra_beds > 0)? 1:0;
+
+            $method = 'POST';
+            $url = '/kamarPartner/store';
+            if(!empty($room_id)){
+                $method = 'PUT';
+                $url = '/kamarPartner/update/'. $room_id;
+            }
+
+            $form_params = [
+                'id_hotel' => $hotel_id,
+                'kamar' => $room_name,
+                'maks_orang' => $max_occupancy,
+                'sarapan' => $breakfast_included,
+                'wifi' => $wifi_included,
+                'ukuran' => $room_size,
+                'jumlah' => $number_of_room,
+                'harga' => $room_price,
+                'extrabed' => $is_extrabed,
+                'maks_extrabed' => $max_extra_beds,
+                'harga_extrabed' => $extra_bed_price,
+            ];
+            $params = [
+                'method' => $method,
+                'form_params_input' => $form_params,
+                'end_point_url' => $url,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to save data!';
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
 }

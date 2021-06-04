@@ -16,49 +16,48 @@
 
     <script>
         let data_myChart = [
-            {x:'2016-12-01', y:20},
-            {x:'2016-12-02', y:10},
-            {x:'2016-12-03', y:10},
-            {x:'2016-12-04', y:10},
-            {x:'2016-12-05', y:10},
-            {x:'2016-12-06', y:10},
-            {x:'2016-12-07', y:10},
-            {x:'2016-12-08', y:10},
-            {x:'2016-12-09', y:10},
-            {x:'2016-12-10', y:10},
-            {x:'2016-12-11', y:10},
-            {x:'2016-12-12', y:10},
-            {x:'2016-12-13', y:10},
-            {x:'2016-12-14', y:10},
-            {x:'2016-12-15', y:10},
-            {x:'2016-12-16', y:10},
-            {x:'2016-12-17', y:10},
-            {x:'2016-12-18', y:10},
-            {x:'2016-12-19', y:10},
-            {x:'2016-12-20', y:10},
-            {x:'2016-12-21', y:10},
-            {x:'2016-12-22', y:10},
-            {x:'2016-12-23', y:10},
-            {x:'2016-12-24', y:10},
-            {x:'2016-12-25', y:10},
-            {x:'2016-12-26', y:10},
-            {x:'2016-12-27', y:10},
-            {x:'2016-12-28', y:10},
-            {x:'2016-12-29', y:10},
-            {x:'2016-12-30', y:10},
-            ];
+            20,10,73,41,83,41,90
+        ];
+        let data_ = {
+            labels: [
+                '2016-12-01',
+                '2016-12-02',
+                '2016-12-03',
+                '2016-12-04',
+                '2016-12-05',
+                '2016-12-06',
+                '2016-12-07',
+            ],
+            datasets: [
+                {
+                    label: 'Total Booking',
+                    data: data_myChart,
+                    borderColor: '#000',
+                    backgroundColor: '#00abdf',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Booking Success',
+                    data: data_myChart,
+                    borderColor: '#000',
+                    backgroundColor: '#abdf',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Booking Cancel',
+                    data: data_myChart,
+                    borderColor: '#000',
+                    backgroundColor: '#c9ccc3',
+                    borderWidth: 1
+                }
+            ]
+        };
         let ctx = $('#myChart');
         let myChart = new Chart(ctx, {
             type: 'bar',
-            data: {
-                datasets: [{
-                    label: 'Data',
-                    data: data_myChart,
-                    borderColor: '#000',
-                    borderWidth: 1
-                }]
-            },
+            data: data_,
             options: {
+                responsive: true,
                 scales: {
                     y: {
                         beginAtZero: true
