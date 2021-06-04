@@ -1574,7 +1574,7 @@
         let route_detail_hotel_room_setactive = '{{ route('hotel.detail.rooms.set-active') }}';
         let route_detail_hotel_room_save = '{{ route('hotel.detail.rooms.save') }}';
 
-        let total_data_per_page = 2;
+        let total_data_per_page = 10;
     </script>
 
     <script>
