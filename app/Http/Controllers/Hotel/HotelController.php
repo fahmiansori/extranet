@@ -437,4 +437,128 @@ class HotelController extends Controller
 
         return response()->json(['error'=>$validator->errors()->all()]);
     }
+
+    public function roomPhoto(Request $request){
+        $room_id = $request->room_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['data'] = [];
+        $data_ = [];
+
+        if($room_id && !empty($room_id)){
+            $params = [
+                'end_point_url' => '/kamarPhoto/show/'. $room_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $data_ = json_decode($this->send_request($params));
+            if($data_->status == 'success' && $data_->response_obj->result){
+                $data_ = $data_->response_obj->data;
+                $data['status'] = 'success';
+            }else{
+                $data_ = [];
+            }
+        }
+        $data['data'] = $data_;
+
+        return response()->json($data);
+    }
+
+    public function roomPhotoUpload(Request $request){
+        $validator = Validator::make($request->all(), [
+            'room_id' => 'required',
+            'flag_utama' => 'required',
+            'image_room_photos' => 'required',
+        ]);
+
+        if($validator->passes()){
+            $room_id = $request->room_id;
+            $flag_utama = $request->flag_utama;
+            $image_room_photos = ($request->hasFile('image_room_photos'))? $request->file('image_room_photos'):'';
+
+            $form_params = [
+                'id_kamar' => $room_id,
+                'flag_utama' => $flag_utama,
+                'image_kamar' => $image_room_photos,
+            ];
+            $form_params_options = [
+                [
+                    'field' => 'image_kamar',
+                    'type' => 'file'
+                ]
+            ];
+            $params = [
+                'method' => 'POST',
+                'form_params_input' => $form_params,
+                'form_params_options' => $form_params_options,
+                'end_point_url' => '/kamarPhoto/store',
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to save data!';
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
+
+    public function roomPhotoDelete(Request $request){
+        $image_id = $request->image_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to delete data!';
+
+        if($image_id && !empty($image_id)){
+            $params = [
+                'method' => 'DELETE',
+                'end_point_url' => '/kamarPhoto/delete/'. $image_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+        }
+        return response()->json($data);
+    }
+
+    public function roomPhotoUpdatePrimary(Request $request){
+        $image_id = $request->image_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to update data!';
+
+        if($image_id && !empty($image_id)){
+            $params = [
+                'method' => 'PUT',
+                'end_point_url' => '/kamarPhoto/update/'. $image_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+        }
+        return response()->json($data);
+    }
 }

@@ -23,6 +23,29 @@
         #ul li:hover span:hover { background-color: rgba(0,0,0,1); }
 
         #ul li.selected { border: 2px solid #000; }
+
+
+        #ul_room_photos { list-style-type: none; margin: 0px; padding: 0px; }
+        #ul_room_photos li {
+            padding-top: 65px;
+            float: left;
+            /* width: 210px; */ height: 210px;
+            background-position: center center;
+            background-repeat: no-repeat; border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            margin: 0 10px 10px 0;
+        }
+        #ul_room_photos li span {
+            display: none; background-color: rgba(0,0,0,0.5);
+            color: #555; text-align: center;
+            margin: 0px 15px 10px 15px; color: #fff;
+            border-radius: 5px;
+            padding: 3px; cursor: pointer;
+        }
+        #ul_room_photos li:hover span { display: block; }
+        #ul_room_photos li:hover span:hover { background-color: rgba(0,0,0,1); }
+
+        #ul_room_photos li.selected { border: 2px solid #000; }
     </style>
 @endsection
 @section('title_page', 'Hotel')
@@ -36,6 +59,7 @@
             <a class="nav-link" id="tab_3" data-bs-toggle="pill" href="#tab_3_content" role="tab" aria-controls="tab_3_content" aria-selected="false">Hotel Photos</a>
             <a class="nav-link" id="tab_2" data-bs-toggle="pill" href="#tab_2_content" role="tab" aria-controls="tab_2_content" aria-selected="false">Hotel Room Data</a>
             <a class="nav-link" id="tab_4" data-bs-toggle="pill" href="#tab_4_content" role="tab" aria-controls="tab_4_content" aria-selected="false">Room Form</a>
+            <a class="nav-link" id="tab_5" data-bs-toggle="pill" href="#tab_5_content" role="tab" aria-controls="tab_5_content" aria-selected="false" style="display:none;">Room Photo</a>
         </div>
 
         <div class="tab-content" id="v-pills-tabContent">
@@ -320,6 +344,11 @@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
+
+                    <div class="text-center text-danger" id="no_hotel_photos" style="display:none;">
+                        -- No Photo --
+                    </div>
+
                     <div class="clearfix"></div>
                 </div>
                 <div class="clearfix"></div>
@@ -497,6 +526,13 @@
                         <tbody id="rooms">
                         </tbody>
                     </table>
+                </div>
+
+                <div id="data_rooms_paging">
+                    <nav aria-label="">
+                        <ul class="pagination justify-content-center" id="data_rooms_paging_pages">
+                        </ul>
+                    </nav>
                 </div>
             </div>
 
@@ -959,12 +995,113 @@
                     </div>
                 </div>
             </div>
+
+            <div class="tab-pane fade" id="tab_5_content" role="tabpanel" aria-labelledby="tab_5">
+                <div class="alert alert-secondary p-1" role="alert">
+                    <strong>
+                        Room <span id="room_name_caption">-</span> Photos
+                    </strong>
+                </div>
+
+                <input type="hidden" name="room_photos_room_id" id="room_photos_room_id" value="">
+
+                <div class="mb-3" id="room_photos_loading" style="display:none;">
+                    <div class="spinner-border text-red" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="m-3">
+                    <div id="room_photos">
+                        <ul id="ul_room_photos">
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="text-center text-danger" id="no_room_photos" style="display:none;">
+                        -- No Photo --
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="alert alert-secondary p-1" role="alert">
+                    <strong>
+                        Upload Photos
+                    </strong>
+                </div>
+
+                <div>
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <input type="file" accept="image/*" onchange="loadFileRoom(event)" name="room_photos_image" id="room_photos_image" class="form-control">
+                        </div>
+
+                        <div class="col-lg-1">
+                            <button class="btn btn-primary" id="btn_room_photos_upload">Upload</button>
+                        </div>
+
+                        <div class="col" id="loading_room_photos_upload" style="display:none;">
+                            <div class="spinner-border text-red" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="alert alert-secondary p-1" role="alert">
+                                Image Preview
+                            </div>
+
+                            <div class="text-center">
+                                <img id="image_preview_room_photos" style="max-width:600px;">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="alert alert-secondary p-1" role="alert">
+                                Photo Attributes
+                            </div>
+
+                            <div>
+                                <div class="row m-1">
+                                    <div class="col_left col-lg-4">
+                                        <div class="text-end">
+                                            <label for="room_photos_flag" class="col-form-label">Photo Flag :</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col_right col-lg-8">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-lg-6">
+                                                <select name="room_photos_flag" id="room_photos_flag" class="form-select" aria-label="Choose">
+                                                    <option value="0">-</option>
+                                                    <option value="1">Primary</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         let loadFile = function(event) {
             var image_preview = document.getElementById('image_preview');
+            image_preview.src = URL.createObjectURL(event.target.files[0]);
+            image_preview.onload = function() {
+                URL.revokeObjectURL(image_preview.src) // free memory
+            }
+        };
+
+        let loadFileRoom = function(event) {
+            var image_preview = document.getElementById('image_preview_room_photos');
             image_preview.src = URL.createObjectURL(event.target.files[0]);
             image_preview.onload = function() {
                 URL.revokeObjectURL(image_preview.src) // free memory
@@ -1218,9 +1355,13 @@
 
         function setHotelDetailPhoto(data){
             if(data.status == 'success'){
-                $.each(data.data, function(i, e){
-                    addHotelImageToElement(e.gambar, e.id, e.flag_utama);
-                });
+                if(data.data.length > 0){
+                    $.each(data.data, function(i, e){
+                        addHotelImageToElement(e.gambar, e.id, e.flag_utama);
+                    });
+                }else{
+                    $('#no_hotel_photos').show();
+                }
             }else{
                 clearPhoto();
             }
@@ -1229,6 +1370,7 @@
         function loadHotelPhotoData(){
             clearPhoto();
             showLoadingHotelPhoto();
+            $('#no_hotel_photos').hide();
             let hotel_id = $('#hotel_select_2').val();
 
             if(hotel_id){
@@ -1431,6 +1573,8 @@
         let route_detail_hotel_room_setinactive = '{{ route('hotel.detail.rooms.set-inactive') }}';
         let route_detail_hotel_room_setactive = '{{ route('hotel.detail.rooms.set-active') }}';
         let route_detail_hotel_room_save = '{{ route('hotel.detail.rooms.save') }}';
+
+        let total_data_per_page = 2;
     </script>
 
     <script>
@@ -1445,7 +1589,75 @@
             $('#loading_hotel_3').hide();
         }
 
-        let addHotelRoomsToElement = function (data_){
+        let paginationRoom = function(total_data, page_, perPage_){
+            $('#data_rooms_paging').hide();
+            $('#data_rooms_paging_pages').html('');
+
+            if(total_data > 0){
+                $('#data_rooms_paging').show();
+
+                let total_page = Math.ceil(total_data/perPage_);
+                let html_ = '';
+
+                let current_page = page_;
+
+                if(current_page > 1){
+                    html_ +=`
+                        <li class="page-item">
+                            <a class="page-link" href="?page=`+ (current_page-1) +`" data-page="`+ (current_page-1) +`" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    `;
+                }
+
+                let showPage = 0;
+                for(page = 1; page <= total_page; page++)
+                {
+                        if (((page >= current_page - 3) && (page <= current_page + 3)) || (page == 1) || (page == total_page))
+                        {
+                            if ((showPage == 1) && (page != 2)){
+                                html_ += `
+                                    <li class="page-item disabled disabled1"><a class="page-link disabled" href="javascript:void(0);">...</a></li>
+                                `;
+                            }
+
+                            if ((showPage != (total_page - 1)) && (page == total_page)){
+                                html_ += `
+                                    <li class="page-item disabled disabled2"><a class="page-link disabled" href="javascript:void(0);">...</a></li>
+                                `;
+                            }
+
+                            if (page == current_page){
+                                html_ += `
+                                    <li class="page-item active"><a class="page-link disabled" href="javascript:void(0);">`+ page +`</a></li>
+                                `;
+                            }
+                            else {
+                                html_ += `
+                                    <li class="page-item"><a class="page-link" href="?page=`+ page +`" data-page="`+ page +`">`+ page +`</a></li>
+                                `;
+                            }
+
+                            showPage = page;
+                        }
+                }
+
+
+                if (current_page < total_page){
+                    html_ += `
+                        <li class="page-item">
+                            <a class="page-link" href="?page=`+ (current_page+1) +`" data-page="`+ (current_page+1) +`" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    `;
+                }
+
+                $('#data_rooms_paging_pages').html(html_);
+            }
+        }
+        let addHotelRoomsToElement = function (data_, num = 1){
             let sarapan = '';
             let wifi = '';
             if(data_.sarapan && data_.sarapan == 1){
@@ -1469,6 +1681,12 @@
                     <a href="javascript:void(0)" class="rooms_edit btn btn-sm btn-secondary" data-room_id="`+ data_.id +`">Edit</a> <br>
                 </div>
             `;
+
+            actions += `
+                <div class="photos_div" id="photos_div_`+ data_.id +`">
+                    <a href="javascript:void(0)" class="rooms_photos_show btn btn-sm btn-warning mt-1" data-room_id="`+ data_.id +`" data-room_name="`+ data_.kamar +`">Photos</a> <br>
+                </div>
+            `;
             if(data_.status == 'aktif'){
                 actions += `
                     <div class="set_inactive_div" id="set_inactive_div_`+ data_.id +`">
@@ -1486,7 +1704,7 @@
 
             let html_ = `
                 <tr>
-                    <th scope="row" class="text-center">1</th>
+                    <th scope="row" class="text-center">`+ num +`</th>
                     <td>`+ data_.kamar +`</td>
                     <td>
                         - Harga `+ data_.harga_default +` <br>
@@ -1509,29 +1727,53 @@
 
             $(html_).hide().appendTo('#rooms').fadeIn(300);
         }
-        let setHotelDetailRooms = function (data){
+        let setHotelDetailRooms = function (data, page, perPage){
             if(data.status == 'success'){
-                let total_data = data.data.total; // for paging
+                let total_data = data.total; // for paging
 
-                $.each(data.data, function(i, e){
-                    addHotelRoomsToElement(e);
-                });
+                paginationRoom(total_data, page, perPage);
+                if(total_data > 0){
+                    let number = 0;
+                    let num = page * perPage;
+                    $.each(data.data, function(i, e){
+                        number++;
+
+                        addHotelRoomsToElement(e, (number + num - perPage));
+                    });
+                }else{
+                    let html_ = `
+                        <tr>
+                            <th scope="row" colspan="6" class="text-center text-danger">
+                                No data!
+                            </th>
+                        </tr>
+                    `;
+
+                    $(html_).hide().appendTo('#rooms').fadeIn(300);
+                }
             }else{
                 clearRooms();
             }
         }
 
-        let getHotelRooms = function (){
+        let getHotelRooms = function (page_ = 1, perPage_ = 0, q_ = '', sortBy_ = ''){
             clearRooms();
             showLoadingHotelRooms();
             let hotel_id = $('#hotel_select_3').val();
 
+            let q = (q_)? q_:'';
+            let sortBy = (sortBy_)? sortBy_:'price-desc';
+            let page = page_;
+            let perPage = (perPage_ == 0)? total_data_per_page:10;
+
+            let queryString = '?q='+ q +'&sortBy='+ sortBy +'&page='+ page +'&perPage='+ perPage +'';
+
             if(hotel_id){
                 $.ajax({
-                    url: route_detail_hotel_rooms +'/'+ hotel_id,
+                    url: route_detail_hotel_rooms +'/'+ hotel_id +''+ queryString,
                     type:'GET',
                     success: function(data) {
-                        setHotelDetailRooms(data);
+                        setHotelDetailRooms(data, page, perPage);
                     }
                 }).always(function() {
                     hideLoadingHotelRooms();
@@ -1841,15 +2083,47 @@
             }
         }
 
+        let showRoomPhotos = function(el){
+            let room_id = el.data('room_id');
+            let room_name = el.data('room_name');
+
+            if(room_id){
+                $('[href="#tab_5_content"]').tab('show');
+                $('#room_name_caption').html(room_name);
+                $('#room_photos_room_id').val(room_id);
+
+                loadRoomPhotoData();
+            }else{
+                alert('Invalid room id!');
+            }
+        }
+
         $(document).ready(function(){
             $('#hotel_select_3').on('change', function(){
                 getHotelRooms();
             });
 
-            /* CHECKPOINT add and edit room */
-            /* paging */
+            $('body').on('click', '.page-item a', function(e) {
+                e.preventDefault();
+
+                if($(this).hasClass("disabled")){
+                    // console.log('has class disabled');
+                    return ;
+                }
+
+                let page = $(this).data('page');
+                getHotelRooms(page);
+
+                // var url = $(this).attr('href');
+                // window.history.pushState("", "", url);
+            });
+
             $('#rooms').on('click', '.rooms_edit', function(){
                 editRoom($(this));
+            });
+
+            $('#rooms').on('click', '.rooms_photos_show', function(){
+                showRoomPhotos($(this));
             });
 
             $('#rooms').on('click', '.rooms_set_inactive', function(){
@@ -1868,6 +2142,270 @@
             $('#save_room').on('click', function(){
                 saveRoom();
             })
+        });
+    </script>
+
+    <!-- Hotel Rooms Photos -->
+    <script>
+        let route_detail_room_photos = '{{ route('hotel.detail.rooms.photo') }}';
+        let route_detail_room_photos_upload = '{{ route('hotel.detail.rooms.photo-upload') }}';
+        let route_detail_room_photos_delete = '{{ route('hotel.detail.rooms.photo-delete') }}';
+        let route_detail_room_photos_update_primary = '{{ route('hotel.detail.rooms.photo-update-primary') }}';
+    </script>
+
+    <script>
+        function clearPhotoRoom(){
+            $('#ul_room_photos').html('');
+        }
+        function clearPhotoRoomInput(){
+            // $('#room_name_caption').html('');
+            // $('#room_photos_room_id').val('');
+            $('#room_photos_image').val('');
+            unloadImageRoom();
+        }
+
+        let showLoadingRoomPhoto = function(){
+            $('#room_photos_loading').show();
+        }
+        let hideLoadingRoomPhoto = function(){
+            $('#room_photos_loading').hide();
+        }
+        let showLoadingRoomPhotoUpload = function(){
+            $('#loading_room_photos_upload').show();
+            $('#btn_room_photos_upload').prop('disabled', true);
+        }
+        let hideLoadingRoomPhotoUpload = function(){
+            $('#loading_room_photos_upload').hide();
+            $('#btn_room_photos_upload').prop('disabled', false);
+        }
+
+        function addRoomImageToElement(img_, id_, flag_utama_){
+            let primary_ = ``;
+            if(flag_utama_ == 1){
+                primary_ = `<span class="" style="background:#df0005;">PRIMARY</span>`;
+            }else{
+                primary_ = `<span data-photo_id="`+ id_ +`">Set as Primary</span>`;
+            }
+
+            let html_ = `
+                <li style="background-image: url(`+ img_ +`);background-size: contain; background-repeat: no-repeat;" class="aimg col-lg-3" data-photo_id="`+ id_ +`">
+                    `+ primary_ +`
+                    <span data-photo_id="`+ id_ +`">DELETE</span>
+                </li>
+            `;
+
+            $(html_).hide().appendTo('#ul_room_photos').fadeIn(300);
+        }
+
+        function setRoomDetailPhoto(data){
+            if(data.status == 'success'){
+                if(data.data.length > 0){
+                    $.each(data.data, function(i, e){
+                        addRoomImageToElement(e.gambar, e.id, e.flag_utama);
+                    });
+                }else{
+                    $('#no_room_photos').show();
+                }
+            }else{
+                clearPhotoRoom();
+            }
+        }
+
+        function loadRoomPhotoData(){
+            clearPhotoRoom();
+            showLoadingRoomPhoto();
+            $('#no_room_photos').hide();
+
+            let room_id = $('#room_photos_room_id').val();
+
+            if(room_id){
+                $.ajax({
+                    url: route_detail_room_photos +'/'+ room_id,
+                    type:'GET',
+                    success: function(data) {
+                        setRoomDetailPhoto(data);
+                    }
+                }).always(function() {
+                    hideLoadingRoomPhoto();
+                })
+                .fail(function() {
+                    alert('server error');
+                });
+            }else{
+                hideLoadingRoomPhoto();
+                $('[href="#tab_2_content"]').tab('show');
+                alert('Room ID not set!');
+            }
+        }
+
+        function uploadRoomPhoto(){
+            showLoadingRoomPhotoUpload();
+
+            let room_id = $('#room_photos_room_id').val();
+            let flag_utama = $('#room_photos_flag').val();
+            let image_room_photos = $('#room_photos_image').prop('files')[0];
+
+            let _token = $("input[name='_token']").val();
+            var data_send = new FormData();
+            data_send.append('_token', _token);
+            data_send.append('room_id', room_id);
+            data_send.append('flag_utama', flag_utama);
+            data_send.append('image_room_photos', image_room_photos);
+
+            $.ajax({
+                url: route_detail_room_photos_upload,
+                type:'POST',
+                data: data_send,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if($.isEmptyObject(data.error)){
+                        if(data.status == 'success'){
+                            $('.message-success').html(data.message);
+                            $('.message-success').show();
+                        }else{
+                            $('.message-failed').html(data.message);
+                            $('.message-failed').show();
+                        }
+                    }else{
+                        printErrorMsg(data.error);
+                    }
+                }
+            }).always(function() {
+                document.getElementById('nav_bar').scrollIntoView({block: 'start', behavior: 'smooth'});
+                setTimeout(function(){
+                    $('.print-error-msg').hide();
+                    $('.message-success').hide();
+                    $('.message-failed').hide();
+                    clearPhotoRoomInput();
+                },4000);
+
+                loadRoomPhotoData();
+                hideLoadingRoomPhotoUpload();
+            })
+            .fail(function() {
+                alert('server error');
+            });
+        }
+
+        function deleteRoomPhoto(el_){
+            showLoadingRoomPhoto();
+            let data_photo_id = el_.data('photo_id');
+
+            if(data_photo_id){
+                $.ajax({
+                    url: route_detail_room_photos_delete +'/'+ data_photo_id,
+                    type:'GET',
+                    success: function(data) {
+                        if($.isEmptyObject(data.error)){
+                            if(data.status == 'success'){
+                                $('.message-success').html(data.message);
+                                $('.message-success').show();
+
+                                el_.parent().fadeOut(300, function(){
+                                    el_.remove();
+                                });
+                            }else{
+                                $('.message-failed').html(data.message);
+                                $('.message-failed').show();
+                            }
+                        }else{
+                            printErrorMsg(data.error);
+                        }
+                    }
+                }).always(function() {
+                    document.getElementById('nav_bar').scrollIntoView({block: 'start', behavior: 'smooth'});
+                    setTimeout(function(){
+                        $('.print-error-msg').hide();
+                        $('.message-success').hide();
+                        $('.message-failed').hide();
+                    },4000);
+
+                    loadRoomPhotoData();
+                    hideLoadingRoomPhoto();
+                })
+                .fail(function() {
+                    alert('server error');
+                });
+            }else{
+                hideLoadingRoomPhoto();
+            }
+        }
+
+        function updatePrimaryRoomPhoto(el_){
+            showLoadingRoomPhoto();
+            let data_photo_id = el_.data('photo_id');
+
+            if(data_photo_id){
+                $.ajax({
+                    url: route_detail_room_photos_update_primary +'/'+ data_photo_id,
+                    type:'GET',
+                    success: function(data) {
+                        if($.isEmptyObject(data.error)){
+                            if(data.status == 'success'){
+                                $('.message-success').html(data.message);
+                                $('.message-success').show();
+
+                                el_.parent().fadeOut(300, function(){
+                                    el_.remove();
+                                });
+                            }else{
+                                $('.message-failed').html(data.message);
+                                $('.message-failed').show();
+                            }
+                        }else{
+                            printErrorMsg(data.error);
+                        }
+                    }
+                }).always(function() {
+                    document.getElementById('nav_bar').scrollIntoView({block: 'start', behavior: 'smooth'});
+                    setTimeout(function(){
+                        $('.print-error-msg').hide();
+                        $('.message-success').hide();
+                        $('.message-failed').hide();
+                    },4000);
+
+                    loadRoomPhotoData();
+                    hideLoadingRoomPhoto();
+                })
+                .fail(function() {
+                    alert('server error');
+                });
+            }else{
+                hideLoadingRoomPhoto();
+            }
+        }
+
+        function unloadImageRoom(){
+            var image_preview = document.getElementById('image_preview_room_photos');
+            image_preview.src = '';
+            image_preview.onload = function() {
+                URL.revokeObjectURL(image_preview.src) // free memory
+            }
+        }
+
+        $(document).ready(function(){
+            $('#ul_room_photos').on('click','li span:first-child',
+                function(){
+                    updatePrimaryRoomPhoto($(this));
+
+                    if($(this).parent().hasClass('selected')) {
+                        $(this).parent().removeClass('selected');
+                    }
+                    else { $(this).parent().addClass('selected'); }
+                }
+            );
+
+            $('#ul_room_photos').on('click','li span:nth-child(2)',
+                function(){
+                    deleteRoomPhoto($(this));
+                }
+            );
+
+            $('#btn_room_photos_upload').on('click', function(){
+                uploadRoomPhoto();
+            });
         });
     </script>
 @endsection

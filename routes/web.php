@@ -52,6 +52,11 @@ Route::group([
         Route::get('/detail/rooms/set-active/{room_id?}', 'HotelController@setActiveRoom')->name('hotel.detail.rooms.set-active');
         Route::get('/detail/rooms/{hotel_id?}', 'HotelController@rooms')->name('hotel.detail.rooms');
 
+        Route::get('/detail/rooms-photo/{room_id?}', 'HotelController@roomPhoto')->name('hotel.detail.rooms.photo');
+        Route::post('/detail/rooms-photo-upload', 'HotelController@roomPhotoUpload')->name('hotel.detail.rooms.photo-upload');
+        Route::get('/detail/rooms-photo-delete/{image_id?}', 'HotelController@roomPhotoDelete')->name('hotel.detail.rooms.photo-delete');
+        Route::get('/detail/rooms-photo-update-primary/{image_id?}', 'HotelController@roomPhotoUpdatePrimary')->name('hotel.detail.rooms.photo-update-primary');
+
         Route::get('/detail/{hotel_id?}', 'HotelController@detail')->name('hotel.detail');
         Route::post('/update', 'HotelController@update')->name('hotel.update');
         Route::get('/room-form', 'HotelController@roomForm')->name('hotel.room-form');
