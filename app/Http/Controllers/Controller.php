@@ -15,11 +15,13 @@ class Controller extends BaseController
 
     public function __construct()
     {
+        /*
         $access_token = Cache::get('access_token');
         // add time
         if($access_token){
             $token_timeout = \Config::get('values.token_timeout');
             Cache::put('access_token', $access_token, $token_timeout);
         }
+        */
     }
 }
