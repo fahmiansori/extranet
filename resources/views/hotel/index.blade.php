@@ -382,8 +382,8 @@
                                 Image Preview
                             </div>
 
-                            <div class="text-center">
-                                <img id="image_preview" style="max-width:600px;">
+                            <div class="text-center row">
+                                <img id="image_preview" class="" style="max-width:100%;">
                             </div>
                         </div>
 
@@ -1061,7 +1061,7 @@
                             </div>
 
                             <div class="text-center">
-                                <img id="image_preview_room_photos" style="max-width:600px;">
+                                <img id="image_preview_room_photos" style="max-width:100%;">
                             </div>
                         </div>
 
