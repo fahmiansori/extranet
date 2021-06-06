@@ -7,6 +7,8 @@
 @section('title_page', (isset($title_page))? $title_page:'')
 
 @section('content')
+    {{ csrf_field() }}
+
     <div>
         <div class="row m-1">
             <div class="col_left col-lg-2">
@@ -74,6 +76,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="row m-1">
+            <div class="col_left col-lg-2">
+            </div>
+
+            <div class="col_right col-lg-7">
+                <div class="d-grid gap-2 d-md-flex mr-5">
+                    <button class="btn button-red" type="button" id="btn_view_chart">View</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div>
@@ -86,6 +99,7 @@
     <script src="{{ asset('libs/chartjs/chart.min.js') }}"></script>
 
     <script>
+    /*
         let data_myChart = [
             20,10,73,41,83,41,90
         ];
@@ -142,6 +156,7 @@
                 }
             }
         });
+    */
     </script>
 
     <script src="{{ asset('libs/moment/moment.min.js') }}"></script>
@@ -161,6 +176,146 @@
             $("#datetimepicker_1_2").on("change.datetimepicker", function (e) {
                 $('#datetimepicker_1_1').datetimepicker('maxDate', e.date);
             });
+        });
+    </script>
+
+    <script>
+        let route_get_report_chart_data = '{{ route('dashboard.get-report-chart-data') }}';
+        let myChart = null;
+        let dateFrom = moment().format('DD-MM-YYYY'); // .subtract(7,'d')
+        let dateTo = moment().add(7,'d').format('DD-MM-YYYY');
+    </script>
+    <script>
+        let clearCanvas = function(){
+            if(myChart){
+                myChart.destroy();
+            }
+        }
+
+        let setReportChart = function(data){
+            if(data.status != 'success'){
+                alert(data.message);
+                return;
+            }
+
+            let data_label_myChart = [];
+            let data_myChart_booking = [];
+            let data_myChart_sukses = [];
+            let data_myChart_batal = [];
+
+            $.each(data.data, function(i, e){
+                data_label_myChart.push(e.label);
+                data_myChart_booking.push(e.booking);
+                data_myChart_sukses.push(e.sukses);
+                data_myChart_batal.push(e.batal);
+            });
+
+            let data_ = {
+                labels: data_label_myChart,
+                datasets: [
+                    {
+                        label: 'Total Booking',
+                        data: data_myChart_booking,
+                        borderColor: '#000',
+                        backgroundColor: '#00abdf',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Booking Success',
+                        data: data_myChart_sukses,
+                        borderColor: '#000',
+                        backgroundColor: '#abdf',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Booking Cancel',
+                        data: data_myChart_batal,
+                        borderColor: '#000',
+                        backgroundColor: '#c9ccc3',
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            let ctx = $('#myChart');
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: data_,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                            title: {
+                                display: true,
+                                text: 'Report Booking',
+                            }
+                    }
+                }
+            });
+        };
+
+        let loading_el = `
+            <div class="spinner-border text-light spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        `;
+        let btn_show_report = $('#btn_view_chart').html();
+        let showLoadingReport = function(){
+            $('#btn_view_chart').prop('disabled', true);
+            $('#btn_view_chart').html(loading_el);
+        }
+        let hideLoadingReport = function(){
+            $('#btn_view_chart').prop('disabled', false);
+            $('#btn_view_chart').html(btn_show_report);
+        }
+
+        let showReport = function(el){
+            showLoadingReport();
+            clearCanvas();
+
+            let hotel_select = $('#hotel_select').val();
+            let date_range_start = $('#date_range_start').val();
+            let date_range_end = $('#date_range_end').val();
+
+            if(!hotel_select){
+                alert('Please select a hotel.');
+                hideLoadingReport();
+                return;
+            }
+
+            let _token = $("input[name='_token']").val();
+            let data_send = {_token:_token,
+                id_hotel:hotel_select,
+                start_date:date_range_start,
+                end_date:date_range_end,
+            };
+
+            $.ajax({
+                url: route_get_report_chart_data,
+                type:'POST',
+                data: data_send,
+                success: function(data) {
+                    setReportChart(data);
+                }
+            }).always(function() {
+                hideLoadingReport();
+            })
+            .fail(function() {
+                alert('server error');
+            });
+        };
+
+        $(document).ready(function(){
+            $('#btn_view_chart').on('click', function(){
+                showReport($(this));
+            });
+
+            $('#date_range_start').val(dateFrom);
+            $('#date_range_end').val(dateTo);
         });
     </script>
 @endsection

@@ -644,6 +644,9 @@
 
         let total_data_per_page = 1000;
         let total_data_per_page_rate = 10;
+
+        let dateFrom = moment().format('DD-MM-YYYY');
+        let dateTo = moment().add(7,'d').format('DD-MM-YYYY');
     </script>
 
     <script>
@@ -1180,6 +1183,9 @@
         }
 
         $(document).ready(function(){
+            $('#date_range_start_2').val(dateFrom);
+            $('#date_range_end_2').val(dateTo);
+
             $('#hotel_select_2').on('change', function(){
                 getHotelRooms();
             });
