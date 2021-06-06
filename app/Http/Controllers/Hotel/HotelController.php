@@ -561,4 +561,175 @@ class HotelController extends Controller
         }
         return response()->json($data);
     }
+
+
+    public function roomsRates(Request $request){
+        $validation = [
+            'id_kamar' => 'required',
+            'page' => 'required',
+            'perPage' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $validation);
+
+        if($validator->passes()){
+            $id_kamar = $request->id_kamar;
+            $q = $request->q;
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $page = $request->page;
+            $perPage = $request->perPage;
+
+            $method = 'POST';
+            $url = '/roomRate/list';
+
+            $form_params = [
+                'id_kamar' => $id_kamar,
+                'q' => $q,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'page' => $page,
+                'perPage' => $perPage,
+            ];
+            $params = [
+                'method' => $method,
+                'form_params_input' => $form_params,
+                'end_point_url' => $url,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to get data!';
+            $data['total'] = 0;
+            $data['data'] = [];
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = '';
+                $data['total'] = $save->response_obj->total;
+                $data['data'] = $save->response_obj->data;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
+
+    public function roomsRatesDetail(Request $request){
+        $room_rate_id = $request->room_rate_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to get data!';
+        $data['data'] = [];
+
+        if($room_rate_id && !empty($room_rate_id)){
+            $params = [
+                'method' => 'GET',
+                'end_point_url' => '/roomRate/show/'. $room_rate_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = '';
+                $data['data'] = $save->response_obj->data;
+            }
+        }
+
+        return response()->json($data);
+    }
+
+    public function roomsRatesDelete(Request $request){
+        $room_rates_id = $request->room_rates_id;
+        $data = [];
+        $data['status'] = 'failed';
+        $data['message'] = 'Failed to delete data!';
+
+        if($room_rates_id && !empty($room_rates_id)){
+            $params = [
+                'method' => 'DELETE',
+                'end_point_url' => '/roomRate/delete/'. $room_rates_id,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+        }
+        return response()->json($data);
+    }
+
+    public function roomsRatesSave(Request $request){
+        $form_type = $request->form_type;
+
+        $validation = [
+            'id_hotel' => 'required',
+            'harga' => 'required',
+        ];
+
+        if(empty($form_type) || $form_type && $form_type == 'new'){
+            $validation['id_kamar'] = 'required';
+            $validation['tanggal_kamar'] = 'required';
+        }
+        if($form_type && $form_type == 'edit'){
+            $validation['room_rates_id'] = 'required';
+        }
+
+        $validator = Validator::make($request->all(), $validation);
+
+        if($validator->passes()){
+            $room_rates_id = $request->room_rates_id;
+            $id_hotel = $request->id_hotel;
+            $id_kamar = $request->id_kamar;
+            $tanggal_kamar = $request->tanggal_kamar;
+            $harga = $request->harga;
+
+            $method = 'POST';
+            $url = '/roomRate/store';
+            if($form_type && $form_type == 'edit'){
+                $method = 'PUT';
+                $url = '/roomRate/update/'. $room_rates_id;
+            }
+
+            $form_params = [
+                'id_hotel' => $id_hotel,
+                'id_kamar' => $id_kamar,
+                'tanggal_kamar' => $tanggal_kamar,
+                'harga' => $harga,
+            ];
+
+            $params = [
+                'method' => $method,
+                'form_params_input' => $form_params,
+                'end_point_url' => $url,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to save data!';
+            $data['message'] = $save->message;
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = $save->response_obj->message;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
 }
