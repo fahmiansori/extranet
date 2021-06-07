@@ -123,11 +123,15 @@ class BookingController extends Controller
             $data['status'] = 'failed';
             $data['message'] = 'Failed to get data!';
             $data['total'] = 0;
-            $data['data'] = [];
+            $data['data'] = '';
             if($save->status == 'success' && $save->response_obj->result){
                 $data['status'] = 'success';
                 $data['message'] = '';
                 $data['data'] = $save->response_obj->data;
+            }
+            if($save->status == 'success' && !$save->response_obj->result){
+                $data['status'] = 'failed';
+                $data['message'] = $save->response_obj->message;
             }
 
             return response()->json($data);
