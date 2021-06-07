@@ -34,25 +34,85 @@
                 </div>
 
                 <div>
+                    <div class="row m-1">
+                        <div class="col_left col-lg-2">
+                            <div class="text-end">
+                                <label for="hotel_select_1" class="col-form-label">Hotel :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-4">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-8">
+                                    <select name="hotel_select_1" id="hotel_select_1" class="form-select" aria-label="Choose">
+                                        <option value="">.:: Choose ::.</option>
+                                        @foreach($data_hotel as $key)
+                                            <option value="{{ $key->id }}">{{ $key->text }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col" id="loading_hotel_1" style="display:none;">
+                                    <div class="spinner-border text-red" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-2">
+                            <div class="text-end">
+                                <label for="booking_code" class="col-form-label">Booking Code :</label>
+                            </div>
+                        </div>
+
+                        <div class="col_right col-lg-4">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-lg-8">
+                                    <input type="text" name="booking_code" id="booking_code" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-1">
+                        <div class="col_left col-lg-2">
+                        </div>
+
+                        <div class="col_right col-lg-7">
+                            <div class="d-grid gap-2 d-md-flex mr-5">
+                                <button class="btn button-red" type="button" id="btn_view_booking_detail">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
                     <div class="row">
+                        {{--
                         <div class="col-lg-3">
                             <div>
                                 [room images]
                             </div>
                         </div>
+                        --}}
 
-                        <div class="col-lg-9">
+                        <div class="col-lg-12">
+                            <input type="hidden" id="id_booking_detail" name="id_booking_detail" value="">
+
                             <div class="row m-1">
                                 <div class="col_left col-lg-5">
                                     <div class="text-end">
-                                        <label for="name" class="col-form-label">Name :</label>
+                                        <label for="kode_booking_detail" class="col-form-label">Code :</label>
                                     </div>
                                 </div>
 
                                 <div class="col_right col-lg-7">
                                     <div class="row g-2 align-items-center">
-                                        <div class="col-lg-6">
-                                            <input type="text" name="name" id="name" class="form-control">
+                                        <div class="col-lg-7">
+                                            <input type="text" name="kode_booking_detail" id="kode_booking_detail" class="form-control" value="" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -61,14 +121,14 @@
                             <div class="row m-1">
                                 <div class="col_left col-lg-5">
                                     <div class="text-end">
-                                        <label for="id_booking" class="col-form-label">ID Booking :</label>
+                                        <label for="tanggal_booking_detail" class="col-form-label">Date :</label>
                                     </div>
                                 </div>
 
                                 <div class="col_right col-lg-7">
                                     <div class="row g-2 align-items-center">
-                                        <div class="col-lg-6">
-                                            <input type="text" name="id_booking" id="id_booking" class="form-control">
+                                        <div class="col-lg-7">
+                                            <input type="text" name="tanggal_booking_detail" id="tanggal_booking_detail" class="form-control" value="" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -77,16 +137,14 @@
                             <div class="row m-1">
                                 <div class="col_left col-lg-5">
                                     <div class="text-end">
-                                        <label for="night_of_stay" class="col-form-label">Night of Stay :</label>
+                                        <label for="nama_pemesan_booking_detail" class="col-form-label">Customer Name :</label>
                                     </div>
                                 </div>
 
                                 <div class="col_right col-lg-7">
                                     <div class="row g-2 align-items-center">
-                                        <div class="col-lg-6">
-                                            <select name="night_of_stay" id="night_of_stay" class="form-select" aria-label="Choose" placeholder="Choose">
-                                                <option value="1">1</option>
-                                            </select>
+                                        <div class="col-lg-7">
+                                            <input type="text" name="nama_pemesan_booking_detail" id="nama_pemesan_booking_detail" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -95,14 +153,14 @@
                             <div class="row m-1">
                                 <div class="col_left col-lg-5">
                                     <div class="text-end">
-                                        <label for="room_type" class="col-form-label">Room Type :</label>
+                                        <label for="email_booking_detail" class="col-form-label">Email :</label>
                                     </div>
                                 </div>
 
                                 <div class="col_right col-lg-7">
                                     <div class="row g-2 align-items-center">
-                                        <div class="col-lg-6">
-                                            <input type="text" name="room_type" id="room_type" class="form-control">
+                                        <div class="col-lg-7">
+                                            <input type="text" name="email_booking_detail" id="email_booking_detail" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -111,16 +169,14 @@
                             <div class="row m-1">
                                 <div class="col_left col-lg-5">
                                     <div class="text-end">
-                                        <label for="number_of_room" class="col-form-label">Number of Room :</label>
+                                        <label for="no_telpon_booking_detail" class="col-form-label">Phone :</label>
                                     </div>
                                 </div>
 
                                 <div class="col_right col-lg-7">
                                     <div class="row g-2 align-items-center">
-                                        <div class="col-lg-6">
-                                            <select name="number_of_room" id="number_of_room" class="form-select" aria-label="Choose" placeholder="Choose">
-                                                <option value="1">1</option>
-                                            </select>
+                                        <div class="col-lg-7">
+                                            <input type="text" name="no_telpon_booking_detail" id="no_telpon_booking_detail" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -129,14 +185,79 @@
                             <div class="row m-1">
                                 <div class="col_left col-lg-5">
                                     <div class="text-end">
-                                        <label for="room_rate" class="col-form-label">Room Rate :</label>
+                                        <label for="tgl_checkin_booking_detail" class="col-form-label">Check In Date :</label>
                                     </div>
                                 </div>
 
                                 <div class="col_right col-lg-7">
                                     <div class="row g-2 align-items-center">
-                                        <div class="col-lg-6">
-                                            <input type="text" name="room_rate" id="room_rate" class="form-control">
+                                        <div class="col-lg-7">
+                                            <input type="text" name="tgl_checkin_booking_detail" id="tgl_checkin_booking_detail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row m-1">
+                                <div class="col_left col-lg-5">
+                                    <div class="text-end">
+                                        <label for="tgl_checkout_booking_detail" class="col-form-label">Check Out Date :</label>
+                                    </div>
+                                </div>
+
+                                <div class="col_right col-lg-7">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-lg-7">
+                                            <input type="text" name="tgl_checkout_booking_detail" id="tgl_checkout_booking_detail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row m-1">
+                                <div class="col_left col-lg-5">
+                                    <div class="text-end">
+                                        <label for="jumlah_tamu_booking_detail" class="col-form-label">Guest :</label>
+                                    </div>
+                                </div>
+
+                                <div class="col_right col-lg-7">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-lg-7">
+                                            <input type="text" name="jumlah_tamu_booking_detail" id="jumlah_tamu_booking_detail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row m-1">
+                                <div class="col_left col-lg-5">
+                                    <div class="text-end">
+                                        <label for="jumlah_kamar_booking_detail" class="col-form-label">Number of Rooms :</label>
+                                    </div>
+                                </div>
+
+                                <div class="col_right col-lg-7">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-lg-7">
+                                            <input type="text" name="jumlah_kamar_booking_detail" id="jumlah_kamar_booking_detail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row m-1">
+                                <div class="col_left col-lg-5">
+                                    <div class="text-end">
+                                        <label for="status_booking_detail" class="col-form-label">Status :</label>
+                                    </div>
+                                </div>
+
+                                <div class="col_right col-lg-7">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-lg-7">
+                                            <div id="status_booking_detail">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -692,6 +813,123 @@
             });
         });
     </script>
+
+    <!-- Booking Detail -->
+    <script>
+        let route_booking_detail = '{{ route('booking.detail') }}';
+    </script>
+
+    <script>
+        let clear_BookingDetail = function(){
+            $('#id_booking_detail').val('');
+            $('#kode_booking_detail').val('');
+            $('#tanggal_booking_detail').val('');
+            $('#nama_pemesan_booking_detail').val('');
+            $('#email_booking_detail').val('');
+            $('#no_telpon_booking_detail').val('');
+            $('#tgl_checkin_booking_detail').val('');
+            $('#tgl_checkout_booking_detail').val('');
+            $('#jumlah_tamu_booking_detail').val('');
+            $('#jumlah_kamar_booking_detail').val('');
+            $('#status_booking_detail').html('');
+        }
+        let loading_el_booking_detail = `
+            <div class="spinner-border text-light spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        `;
+        let btn_view_booking_detail_caption = $('#btn_view_booking_list').html();
+        let showLoading_BookingDetail = function(){
+            $('#btn_view_booking_detail').prop('disabled', true);
+            $('#btn_view_booking_detail').html(loading_el_booking_detail);
+        }
+        let hideLoading_BookingDetail = function(){
+            $('#btn_view_booking_detail').prop('disabled', false);
+            $('#btn_view_booking_detail').html(btn_view_booking_detail_caption);
+        }
+
+        let set_BookingDetail = function (data){
+            if(data.status == 'success'){
+                $('#id_booking_detail').val(data.data.id);
+                $('#kode_booking_detail').val(data.data.kode);
+                $('#tanggal_booking_detail').val(data.data.tanggal);
+                $('#nama_pemesan_booking_detail').val(data.data.nama_pemesan);
+                $('#email_booking_detail').val(data.data.email);
+                $('#no_telpon_booking_detail').val(data.data.no_telpon);
+                $('#tgl_checkin_booking_detail').val(data.data.tgl_checkin);
+                $('#tgl_checkout_booking_detail').val(data.data.tgl_checkout);
+                $('#jumlah_tamu_booking_detail').val(data.data.jumlah_tamu);
+                $('#jumlah_kamar_booking_detail').val(data.data.jumlah_kamar);
+
+                let status = '';
+                if(data.data.status == 'menunggu'){
+                    status = '<span class="badge bg-warning mt-2"> Waiting </span>';
+                }
+
+                $('#status_booking_detail').html(status);
+            }else{
+                clear_BookingDetail();
+                $('.message-failed').html(data.message);
+                $('.message-failed').show();
+            }
+        }
+        let get_BookingDetail = function(){
+            clear_BookingDetail();
+            showLoading_BookingDetail();
+            let id_hotel = $('#hotel_select_1').val();
+            let booking_code = $('#booking_code').val();
+
+            let _token = $("input[name='_token']").val();
+            let data_send = {_token:_token,
+                id_hotel:id_hotel,
+            };
+
+            if(!id_hotel){
+                alert('Please select a hotel!');
+                hideLoading_BookingDetail();
+                return;
+            }
+            if(!booking_code){
+                alert('Please enter booking code!');
+                hideLoading_BookingDetail();
+                return;
+            }
+
+            if(id_hotel){
+                $.ajax({
+                    type:'POST',
+                    url: route_booking_detail +'/'+ booking_code,
+                    data: data_send,
+                    success: function(data) {
+                        set_BookingDetail(data);
+                    }
+                }).always(function() {
+                    hideLoading_BookingDetail();
+
+                    document.getElementById('nav_bar').scrollIntoView({block: 'start', behavior: 'smooth'});
+                    setTimeout(function(){
+                        $('.print-error-msg').hide();
+                        $('.message-success').hide();
+                        $('.message-failed').hide();
+                    },4000);
+                })
+                .fail(function() {
+                    alert('server error');
+                });
+            }else{
+                hideLoading_BookingDetail();
+                alert('Please select a hotel!');
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#btn_view_booking_detail').on('click', function(){
+                get_BookingDetail();
+            });
+        });
+    </script>
+
 
     <!-- Room Rate -->
     <script>

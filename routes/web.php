@@ -74,5 +74,6 @@ Route::group([
     ], function($router){
         Route::get('/', 'BookingController@index')->name('booking');
         Route::post('/list', 'BookingController@list')->name('booking.list');
+        Route::post('/detail/{booking_code?}', 'BookingController@detail')->name('booking.detail');
     });
 });

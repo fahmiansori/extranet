@@ -92,4 +92,47 @@ class BookingController extends Controller
 
         return response()->json(['error'=>$validator->errors()->all()]);
     }
+
+    public function detail(Request $request){
+        $validation = [
+            'id_hotel' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $validation);
+
+        if($validator->passes()){
+            $id_hotel = $request->id_hotel;
+            $booking_code = $request->booking_code;
+
+            $method = 'POST';
+            $url = '/booking/getBooking/'. $booking_code;
+
+            $form_params = [
+                'id_hotel' => $id_hotel,
+            ];
+            $params = [
+                'method' => $method,
+                'form_params_input' => $form_params,
+                'end_point_url' => $url,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to get data!';
+            $data['total'] = 0;
+            $data['data'] = [];
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = '';
+                $data['data'] = $save->response_obj->data;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
 }
