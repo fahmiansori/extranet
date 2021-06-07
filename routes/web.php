@@ -73,5 +73,6 @@ Route::group([
         'prefix' => 'booking',
     ], function($router){
         Route::get('/', 'BookingController@index')->name('booking');
+        Route::post('/list', 'BookingController@list')->name('booking.list');
     });
 });

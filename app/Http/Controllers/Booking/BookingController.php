@@ -35,4 +35,61 @@ class BookingController extends Controller
 
         return view('booking.index', $data);
     }
+
+    public function list(Request $request){
+        $validation = [
+            'id_hotel' => 'required',
+            'page' => 'required',
+            'perPage' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $validation);
+
+        if($validator->passes()){
+            $id_hotel = $request->id_hotel;
+            $id_kamar = $request->id_kamar;
+            $q = $request->q;
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $page = $request->page;
+            $perPage = $request->perPage;
+
+            $method = 'POST';
+            $url = '/booking/list';
+
+            $form_params = [
+                'id_hotel' => $id_hotel,
+                'id_kamar' => $id_kamar,
+                'q' => $q,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'page' => $page,
+                'perPage' => $perPage,
+            ];
+            $params = [
+                'method' => $method,
+                'form_params_input' => $form_params,
+                'end_point_url' => $url,
+                'is_use_auth' => true,
+                'is_api' => true,
+            ];
+            $save = json_decode($this->send_request($params));
+
+            $data = [];
+            $data['status'] = 'failed';
+            $data['message'] = 'Failed to get data!';
+            $data['total'] = 0;
+            $data['data'] = [];
+            if($save->status == 'success' && $save->response_obj->result){
+                $data['status'] = 'success';
+                $data['message'] = '';
+                $data['total'] = $save->response_obj->total;
+                $data['data'] = $save->response_obj->data;
+            }
+
+            return response()->json($data);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
 }

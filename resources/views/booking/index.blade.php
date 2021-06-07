@@ -490,103 +490,157 @@
                     </div>
 
                     <div>
-                        <div class="row g-3">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="hotel_name" class="form-label">Hotel Name</label>
-                                    <input type="text" name="hotel_name" id="hotel_name" class="form-control" placeholder="">
+                        <div class="row m-1">
+                            <div class="col_left col-lg-2">
+                                <div class="text-end">
+                                    <label for="hotel_select_3" class="col-form-label">Hotel :</label>
                                 </div>
                             </div>
 
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="hotel_group" class="form-label">Hotel Group</label>
-                                    <input type="text" name="hotel_group" id="hotel_group" class="form-control" placeholder="">
-                                </div>
-                            </div>
+                            <div class="col_right col-lg-4">
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-lg-8">
+                                        <select name="hotel_select_3" id="hotel_select_3" class="form-select" aria-label="Choose">
+                                            <option value="">.:: Choose ::.</option>
+                                            @foreach($data_hotel as $key)
+                                                <option value="{{ $key->id }}">{{ $key->text }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="booking_id" class="form-label">Booking ID</label>
-                                    <input type="text" name="booking_id" id="booking_id" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row g-3">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="check_in_start_date" class="form-label">Check In Start Date</label>
-                                    <input type="text" name="check_in_start_date" id="check_in_start_date" class="form-control" placeholder="">
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="check_in_end_date" class="form-label">Check In End Date</label>
-                                    <input type="text" name="check_in_end_date" id="check_in_end_date" class="form-control" placeholder="">
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="check_out_start_date" class="form-label">Check Out Start Date</label>
-                                    <input type="text" name="check_out_start_date" id="check_out_start_date" class="form-control" placeholder="">
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="check_out_end_date" class="form-label">Check Out End Date</label>
-                                    <input type="text" name="check_out_end_date" id="check_out_end_date" class="form-control" placeholder="">
+                                    <div class="col" id="loading_hotel_3" style="display:none;">
+                                        <div class="spinner-border text-red" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row g-3">
-                            <div class="col-3">
-                                <div class="mb-3">
-                                    <label for="booking_start_date" class="form-label">Booking Start Date</label>
-                                    <input type="text" name="booking_start_date" id="booking_start_date" class="form-control" placeholder="">
+                        <div class="row m-1">
+                            <div class="col_left col-lg-2">
+                                <div class="text-end">
+                                    <label for="room_select_2" class="col-form-label">Room :</label>
                                 </div>
                             </div>
 
-                            <div class="col-3">
-                                <div class="mb-3">
-                                    <label for="booking_end_date" class="form-label">Booking End Date</label>
-                                    <input type="text" name="booking_end_date" id="booking_end_date" class="form-control" placeholder="">
+                            <div class="col_right col-lg-4">
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-lg-8">
+                                        <select name="room_select_2" id="room_select_2" class="form-select" aria-label="Choose">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-1">
+                            <div class="col_left col-lg-2">
+                                <div class="text-end">
+                                    <label for="date_range_start_3" class="col-form-label">Date Range :</label>
+                                </div>
+                            </div>
+
+                            <div class="col_right col-lg-7">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <div class="form-group">
+                                            <div class="input-group date" id="datetimepicker_3_1" data-target-input="nearest">
+                                                <input type="text" name="date_range_start_3" id="date_range_start_3" class="form-control datetimepicker-input" data-target="#datetimepicker_3_1" aria-describedby="">
+                                                <div class="input-group-append input-group-text" data-target="#datetimepicker_3_1" data-toggle="datetimepicker">
+                                                    <div class=""><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <label for="date_range_end_3" class="col-form-label">To</label>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="form-group">
+                                            <div class="input-group date" id="datetimepicker_3_2" data-target-input="nearest">
+                                                <input type="text" name="date_range_end_3" id="date_range_end_3" class="form-control datetimepicker-input" data-target="#datetimepicker_3_2" aria-describedby="">
+                                                <div class="input-group-append input-group-text" data-target="#datetimepicker_3_2" data-toggle="datetimepicker">
+                                                    <div class=""><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-1">
+                            <div class="col_left col-lg-2">
+                            </div>
+
+                            <div class="col_right col-lg-7">
+                                <div class="d-grid gap-2 d-md-flex mr-5">
+                                    <button class="btn button-red" type="button" id="btn_view_booking_list">View</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mt-5">
-                        <div class="row g-3">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="first_name" class="form-label">First Name</label>
-                                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="">
+                    <div>
+                        <div class="row">
+                            <div class="col_left col-lg-6">
+                                <div class="row justify-content-start">
+                                    <div class="col-2">
+                                        <select name="perPage_booking_list" id="perPage_booking_list" class="form-select form-select-sm" aria-label="Choose">
+                                            <option value="10">10</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="last_name" class="form-label">Last Name</label>
-                                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="">
+                            <div class="col_right col-lg-6">
+                                <div class="row justify-content-end">
+                                    <div class="col-6">
+                                        <input type="text" name="q_booking_list" id="q_booking_list" class="form-control form-control-sm" placeholder="Search here">
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <table class="table table-striped table-hover table-bordered border-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="align-middle text-center">#</th>
+                                    <th scope="col" class="align-middle text-center">Code</th>
+                                    <th scope="col" class="align-middle text-center">Booking</th>
+                                    <th scope="col" class="align-middle text-center">Date</th>
+                                    <th scope="col" class="align-middle text-center">Customer</th>
+                                    <th scope="col" class="align-middle text-center">Contact</th>
+                                    <th scope="col" class="align-middle text-center">Room</th>
+                                    <th scope="col" class="align-middle text-center">Detail Booking</th>
+                                    <th scope="col" class="align-middle text-center">Grand Total</th>
+                                    <th scope="col" class="align-middle text-center">Grand Total Selling</th>
+                                    <th scope="col" class="align-middle text-center">Status</th>
+                                </tr>
+                            </thead>
 
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control" placeholder="">
-                                </div>
+                            <tbody id="booking_list">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="data_booking_list_paging">
+                        <div class="row">
+                            <div class="col_left col-lg-6">
+                                Total data : <strong><span id="total_booking_list">-</span></strong>
                             </div>
 
-                            <div class="col-1">
-                                <div class="mt-3">
-                                    <button type="button" id="" class="btn button-red mt-3">Search</button>
-                                </div>
+                            <div class="col_left col-lg-6">
+                                <nav aria-label="">
+                                    <ul class="pagination justify-content-end" id="data_booking_list_paging_pages">
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -602,19 +656,24 @@
     <script src="{{ asset('libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <script type="text/javascript">
+        let dateFrom_booking_list = moment().format('L');
+        let dateTo_booking_list = moment().add(7,'d').format('L');
+
         $(function () {
-            $('#datetimepicker_1_1').datetimepicker({
-                format: 'DD-MM-YYYY'
-            });
-            $('#datetimepicker_1_2').datetimepicker({
+            $('#datetimepicker_3_1').datetimepicker({
                 format: 'DD-MM-YYYY',
+                defaultDate: dateFrom_booking_list
+            });
+            $('#datetimepicker_3_2').datetimepicker({
+                format: 'DD-MM-YYYY',
+                defaultDate: dateTo_booking_list,
                 useCurrent: false
             });
-            $("#datetimepicker_1_1").on("change.datetimepicker", function (e) {
-                $('#datetimepicker_1_2').datetimepicker('minDate', e.date);
+            $("#datetimepicker_3_1").on("change.datetimepicker", function (e) {
+                $('#datetimepicker_3_2').datetimepicker('minDate', e.date);
             });
-            $("#datetimepicker_1_2").on("change.datetimepicker", function (e) {
-                $('#datetimepicker_1_1').datetimepicker('maxDate', e.date);
+            $("#datetimepicker_3_2").on("change.datetimepicker", function (e) {
+                $('#datetimepicker_3_1').datetimepicker('maxDate', e.date);
             });
 
 
@@ -746,7 +805,7 @@
                 if(current_page > 1){
                     html_ +=`
                         <li class="page-item">
-                            <a class="page-link" href="?page=`+ (current_page-1) +`" data-page="`+ (current_page-1) +`" aria-label="Previous">
+                            <a class="page-link page-link-room-rates" href="?page=`+ (current_page-1) +`" data-page="`+ (current_page-1) +`" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
@@ -760,24 +819,24 @@
                         {
                             if ((showPage == 1) && (page != 2)){
                                 html_ += `
-                                    <li class="page-item disabled disabled1"><a class="page-link disabled" href="javascript:void(0);">...</a></li>
+                                    <li class="page-item disabled disabled1"><a class="page-link page-link-room-rates disabled" href="javascript:void(0);">...</a></li>
                                 `;
                             }
 
                             if ((showPage != (total_page - 1)) && (page == total_page)){
                                 html_ += `
-                                    <li class="page-item disabled disabled2"><a class="page-link disabled" href="javascript:void(0);">...</a></li>
+                                    <li class="page-item disabled disabled2"><a class="page-link page-link-room-rates disabled" href="javascript:void(0);">...</a></li>
                                 `;
                             }
 
                             if (page == current_page){
                                 html_ += `
-                                    <li class="page-item active"><a class="page-link disabled" href="javascript:void(0);">`+ page +`</a></li>
+                                    <li class="page-item active"><a class="page-link page-link-room-rates disabled" href="javascript:void(0);">`+ page +`</a></li>
                                 `;
                             }
                             else {
                                 html_ += `
-                                    <li class="page-item"><a class="page-link" href="?page=`+ page +`" data-page="`+ page +`">`+ page +`</a></li>
+                                    <li class="page-item"><a class="page-link page-link-room-rates" href="?page=`+ page +`" data-page="`+ page +`">`+ page +`</a></li>
                                 `;
                             }
 
@@ -789,7 +848,7 @@
                 if (current_page < total_page){
                     html_ += `
                         <li class="page-item">
-                            <a class="page-link" href="?page=`+ (current_page+1) +`" data-page="`+ (current_page+1) +`" aria-label="Next">
+                            <a class="page-link page-link-room-rates" href="?page=`+ (current_page+1) +`" data-page="`+ (current_page+1) +`" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -1199,7 +1258,7 @@
             $('#btn_search_room_rates').on('click', function(){
                 getRoomRates();
             });
-            $('body').on('click', '.page-item a', function(e) {
+            $('body').on('click', '.page-item a.page-link-room-rates', function(e) {
                 e.preventDefault();
 
                 if($(this).hasClass("disabled")){
@@ -1226,6 +1285,328 @@
 
             $('#btn_search_room_rates_new').on('click', function(){
                 newRoomRates($(this));
+            });
+        });
+    </script>
+
+    <!-- Booking List -->
+    <script>
+        let route_booking_list = '{{ route('booking.list') }}';
+    </script>
+
+    <script>
+        let clearRooms2 = function(){
+            $('#room_select_2').html('');
+        }
+        let showLoadingHotel2 = function(){
+            $('#loading_hotel_3').show();
+        }
+        let hideLoadingHotel2 = function(){
+            $('#loading_hotel_3').hide();
+        }
+        let setHotelRooms2 = function (data){
+            if(data.status == 'success'){
+                let total_data = data.total;
+                if(total_data > 0){
+                    let html_1 = `
+                        <option value=""> -- Choose -- </option>
+                    `;
+
+                    $(html_1).hide().appendTo('#room_select_2').fadeIn(300);
+                    $.each(data.data, function(i, e){
+                        let html_ = `
+                            <option value="`+ e.id +`"> `+ e.kamar +` </option>
+                        `;
+
+                        $(html_).hide().appendTo('#room_select_2').fadeIn(300);
+                    });
+                }else{
+                    let html_ = `
+                        <option value=""> -- No data -- </option>
+                    `;
+
+                    $(html_).hide().appendTo('#room_select_2').fadeIn(300);
+                }
+            }else{
+                clearRooms2();
+            }
+        }
+        let getHotelRooms2 = function (page_ = 1, perPage_ = 0, q_ = '', sortBy_ = ''){
+            clearRooms2();
+            showLoadingHotel2();
+            let hotel_id = $('#hotel_select_3').val();
+
+            let q = (q_)? q_:'';
+            let sortBy = (sortBy_)? sortBy_:'price-desc';
+            let page = page_;
+            let perPage = (perPage_ == 0)? total_data_per_page:10;
+
+            let queryString = '?q='+ q +'&sortBy='+ sortBy +'&page='+ page +'&perPage='+ perPage +'';
+
+            if(hotel_id){
+                $.ajax({
+                    url: route_detail_hotel_rooms +'/'+ hotel_id +''+ queryString,
+                    type:'GET',
+                    success: function(data) {
+                        setHotelRooms2(data);
+                    }
+                }).always(function() {
+                    hideLoadingHotel2();
+                })
+                .fail(function() {
+                    alert('server error');
+                });
+            }else{
+                hideLoadingHotel2();
+            }
+        }
+
+
+        let clear_BookingList = function(){
+            $('#booking_list').html('');
+        }
+        let loading_el2 = `
+            <div class="spinner-border text-light spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        `;
+        let btn_view_booking_list_caption = $('#btn_view_booking_list').html();
+        let showLoading_BookingList = function(){
+            $('#btn_view_booking_list').prop('disabled', true);
+            $('#btn_view_booking_list').html(loading_el2);
+        }
+        let hideLoading_BookingList = function(){
+            $('#btn_view_booking_list').prop('disabled', false);
+            $('#btn_view_booking_list').html(btn_view_booking_list_caption);
+        }
+
+        let pagination_BookingList = function(total_data, page_, perPage_){
+            $('#data_booking_list_paging').hide();
+            $('#data_booking_list_paging_pages').html('');
+
+            if(total_data > 0){
+                $('#data_booking_list_paging').show();
+
+                let total_page = Math.ceil(total_data/perPage_);
+                let html_ = '';
+
+                let current_page = page_;
+
+                if(current_page > 1){
+                    html_ +=`
+                        <li class="page-item">
+                            <a class="page-link page-link-booking-list" href="?page=`+ (current_page-1) +`" data-page="`+ (current_page-1) +`" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    `;
+                }
+
+                let showPage = 0;
+                for(page = 1; page <= total_page; page++)
+                {
+                        if (((page >= current_page - 3) && (page <= current_page + 3)) || (page == 1) || (page == total_page))
+                        {
+                            if ((showPage == 1) && (page != 2)){
+                                html_ += `
+                                    <li class="page-item disabled disabled1"><a class="page-link page-link-booking-list disabled" href="javascript:void(0);">...</a></li>
+                                `;
+                            }
+
+                            if ((showPage != (total_page - 1)) && (page == total_page)){
+                                html_ += `
+                                    <li class="page-item disabled disabled2"><a class="page-link page-link-booking-list disabled" href="javascript:void(0);">...</a></li>
+                                `;
+                            }
+
+                            if (page == current_page){
+                                html_ += `
+                                    <li class="page-item active"><a class="page-link page-link-booking-list disabled" href="javascript:void(0);">`+ page +`</a></li>
+                                `;
+                            }
+                            else {
+                                html_ += `
+                                    <li class="page-item"><a class="page-link page-link-booking-list" href="?page=`+ page +`" data-page="`+ page +`">`+ page +`</a></li>
+                                `;
+                            }
+
+                            showPage = page;
+                        }
+                }
+
+
+                if (current_page < total_page){
+                    html_ += `
+                        <li class="page-item">
+                            <a class="page-link page-link-booking-list" href="?page=`+ (current_page+1) +`" data-page="`+ (current_page+1) +`" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    `;
+                }
+
+                $('#data_booking_list_paging_pages').html(html_);
+            }
+        }
+        let set_BookingList = function (data, page, perPage){
+            if(data.status == 'success'){
+                let total_data = data.total;
+                $('#total_booking_list').html(total_data);
+
+                pagination_BookingList(total_data, page, perPage);
+                if(total_data > 0){
+                    let number = 0;
+                    let num = page * perPage;
+
+                    $.each(data.data, function(i, e){
+                        number++;
+                        let no_data = (number + num - perPage);
+                        /*
+                                <th scope="col" class="align-middle text-center">#</th>
+                                    <th scope="col" class="align-middle text-center">Code</th>
+                                    <th scope="col" class="align-middle text-center">Booking</th>
+                                    <th scope="col" class="align-middle text-center">Date</th>
+                                    <th scope="col" class="align-middle text-center">Customer</th>
+                                    <th scope="col" class="align-middle text-center">Room</th>
+                                    <th scope="col" class="align-middle text-center">Grand Total</th>
+                                    <th scope="col" class="align-middle text-center">Status</th>
+
+                                    "kode": "INV20210412-000002",
+                                    "booking": "",
+                                    "tanggal": "12-04-2021",
+                                    "email": "hendrawanagus15@gmail.com",
+                                    "nama_pemesan": "agus hendrawan",
+                                    "no_telepon": "085247488493",
+                                    "kamar": "Deluxe Room",
+                                    "checkin": "12-04-2021",
+                                    "checkout": "13-04-2021",
+                                    "jumlah_tamu": 1,
+                                    "jumlah_kamar": 1,
+                                    "grandtotal": "300,000",
+                                    "grandtotal_selling": "0",
+                                    "status_transaksi": "menunggu"
+                        */
+
+                        let status = '<span class="badge bg-warning">Waiting</span>';
+                        if(e.status_transaksi == ''){
+                            status = '-';
+                        }
+
+                        let contact = `
+                            - Email : `+ e.email +`<br>
+                            - Phone : `+ e.no_telepon +`<br>
+                        `;
+                        let detail_booking = `
+                            - Check In : `+ e.checkin +`<br>
+                            - Check Out : `+ e.checkout +`<br>
+                            - Guest : `+ e.jumlah_tamu +`<br>
+                            - Total Room : `+ e.jumlah_kamar +`<br>
+                        `;
+
+                        let html_ = `
+                            <tr>
+                                <th scope="row" class="text-center">`+ no_data +`</th>
+                                <td>`+ e.kode +`</td>
+                                <td>`+ e.booking +`</td>
+                                <td class="text-center">`+ e.tanggal +`</td>
+                                <td>`+ e.nama_pemesan +`</td>
+                                <td>`+ contact +`</td>
+                                <td>`+ e.kamar +`</td>
+                                <td>`+ detail_booking +`</td>
+                                <td class="text-end">`+ e.grandtotal +`</td>
+                                <td class="text-end">`+ e.grandtotal_selling +`</td>
+                                <td class="text-center">`+ status +`</td>
+                            </tr>
+                        `;
+
+                        $(html_).hide().appendTo('#booking_list').fadeIn(300);
+                    });
+                }else{
+                    let html_ = `
+                        <tr>
+                            <th class="align-middle text-center text-danger" colspan="11">
+                                -- No data --
+                            </th>
+                        </tr>
+                    `;
+
+                    $(html_).hide().appendTo('#booking_list').fadeIn(300);
+                }
+            }else{
+                clear_BookingList();
+            }
+        }
+        let get_BookingList = function (page_ = 1){
+            clear_BookingList();
+            showLoading_BookingList();
+            let room_id = $('#room_select_2').val();
+            let id_hotel = $('#hotel_select_3').val();
+
+            let q = $('#q_booking_list').val();
+            let start_date = $('#date_range_start_3').val();
+            let end_date = $('#date_range_end_3').val();
+            let page = page_;
+            let perPage = ($('#perPage_booking_list').val())? $('#perPage_booking_list').val():total_data_per_page_rate;
+
+            let _token = $("input[name='_token']").val();
+
+            let data_send = {_token:_token,
+                id_hotel:id_hotel,
+                id_kamar:room_id,
+                q:q,
+                start_date:start_date,
+                end_date:end_date,
+                page:page,
+                perPage:perPage,
+            };
+
+
+            if(id_hotel){
+                $.ajax({
+                    url: route_booking_list,
+                    type:'POST',
+                    data: data_send,
+                    success: function(data) {
+                        set_BookingList(data, page, perPage);
+                    }
+                }).always(function() {
+                    hideLoading_BookingList();
+                })
+                .fail(function() {
+                    alert('server error');
+                });
+            }else{
+                hideLoading_BookingList();
+                alert('Please select a hotel!');
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#hotel_select_3').on('change', function(){
+                getHotelRooms2();
+            });
+
+            $('#perPage_booking_list').on('change', function(){
+                get_BookingList();
+            });
+            $('#q_booking_list').on('change', function(){
+                get_BookingList();
+            });
+            $('#btn_view_booking_list').on('click', function(){
+                get_BookingList();
+            });
+            $('body').on('click', '.page-item a.page-link-booking-list', function(e) {
+                e.preventDefault();
+
+                if($(this).hasClass("disabled")){
+                    // console.log('has class disabled');
+                    return ;
+                }
+
+                let page = $(this).data('page');
+                get_BookingList(page);
             });
         });
     </script>
