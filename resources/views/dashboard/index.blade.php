@@ -216,22 +216,22 @@
                     {
                         label: 'Total Booking',
                         data: data_myChart_booking,
-                        borderColor: '#000',
-                        backgroundColor: '#00abdf',
+                        borderColor: '##4dabf5',
+                        backgroundColor: '#2196f3',
                         borderWidth: 1
                     },
                     {
                         label: 'Booking Success',
                         data: data_myChart_sukses,
-                        borderColor: '#000',
-                        backgroundColor: '#abdf',
+                        borderColor: '#6fbf73',
+                        backgroundColor: '#4caf50',
                         borderWidth: 1
                     },
                     {
                         label: 'Booking Cancel',
                         data: data_myChart_batal,
-                        borderColor: '#000',
-                        backgroundColor: '#c9ccc3',
+                        borderColor: '#ff784e',
+                        backgroundColor: '#ff5722',
                         borderWidth: 1
                     }
                 ]
