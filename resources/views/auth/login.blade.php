@@ -43,10 +43,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="email">Username</label>
+                                    <label class="mb-2 text-muted" for="email">Email</label>
                                     <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
                                     <div class="invalid-feedback">
-                                        Username is required
+                                        Email is required
                                     </div>
                                     <div class="text-danger p-1">{{ $errors->first('email') }}</div>
                                 </div>
